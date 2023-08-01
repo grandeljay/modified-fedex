@@ -56,7 +56,7 @@ class Quote
         foreach ($decoded as $surcharge) {
             $amount = match ($surcharge['type']) {
                 'fixed'   => $surcharge['costs'],
-                'percent' => $method_costs * $surcharge['costs'],
+                'percent' => $method_costs * ($surcharge['costs'] / 100),
             };
 
             $surcharges += $amount;
