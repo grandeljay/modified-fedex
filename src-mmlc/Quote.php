@@ -75,12 +75,13 @@ class Quote
             return $this->getEmpty();
         }
 
-        $country_zone      = Zone::fromCountry($country_code);
-        $country_zone_name = 'zone_' . strtolower($country_zone->name);
+        $country_zone = Zone::fromCountry($country_code);
 
         if (null === $country_zone) {
             return $this->getEmpty();
         }
+
+        $country_zone_name = 'zone_' . strtolower($country_zone->name);
 
         $methods = array();
 
