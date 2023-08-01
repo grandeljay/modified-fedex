@@ -59,7 +59,6 @@ class grandeljayfedex extends StdModule
 
         $this->installer               = new Installer();
         $this->properties['form_edit'] = xtc_draw_form('modules', 'grandeljayfedex.php');
-        $this->quotes                  = $this->quote();
     }
 
     public function install()
@@ -84,10 +83,21 @@ class grandeljayfedex extends StdModule
         $this->installer->uninstallAdminAccess();
     }
 
-    public function quote(): array
+    /**
+     * Used by modified to show shipping costs. Will be ignored if the value is
+     * not an array.
+     *
+     * @var ?array
+     */
+    public function quote(): ?array
     {
-        $quote = new Quote();
+        $quote  = new Quote();
+        $quotes = $quote->getQuote();
 
-        return $quote->getQuote();
+        if (is_array($quotes)) {
+            $this->quotes = $quotes;
+        }
+
+        return $quotes;
     }
 }
