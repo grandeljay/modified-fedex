@@ -2,23 +2,20 @@
 
 namespace Grandeljay\Fedex\Field;
 
-use Grandeljay\Fedex\Zone;
+use Grandeljay\Fedex\{Constants, Zone};
 
 class Shipping
 {
-    public static function getInternational(array $international): string
+    public static function getInternational(): string
     {
-        $economy  = $international['economy'];
-        $priority = $international['priority'];
-
         ob_start();
         ?>
         <details>
             <summary>International</summary>
 
             <div>
-                <?= self::getEconomy($economy); ?>
-                <?= self::getPriority($priority); ?>
+                <?= self::getEconomy(); ?>
+                <?= self::getPriority(); ?>
             </div>
         </details>
         <?php
@@ -27,7 +24,7 @@ class Shipping
         return $html;
     }
 
-    public static function getEconomy(array $economy): string
+    public static function getEconomy(): string
     {
         ob_start();
         ?>
@@ -35,93 +32,23 @@ class Shipping
             <summary>Economy</summary>
 
             <div>
-                <?php foreach ($economy as $zone_name => $zones) { ?>
+                <?php foreach (Zone::cases() as $zone) { ?>
+                    <?php
+                    $zone_title          = sprintf('Zone %s', $zone->name);
+                    $configuration_key   = sprintf(
+                        '%s_SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s',
+                        Constants::MODULE_SHIPPING_NAME,
+                        $zone->name
+                    );
+                    $configuration_value = constant($configuration_key);
+                    ?>
                     <details>
-                        <summary>
-                            <?php
-                            $zone_letter = strtoupper(substr($zone_name, -1, 1));
-                            $zone_text   = sprintf('Zone %s', $zone_letter);
-                            $zone        = Zone::fromString($zone_letter);
-
-                            echo $zone_text;
-                            ?>
-                        </summary>
+                        <summary><?= $zone_title ?></summary>
 
                         <div>
                             <p>Betrifft die Länder: <?= implode(', ', Zone::getCountries($zone)) ?>.</p>
 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Gewicht</th>
-                                        <th>Kosten</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Maximal zulässiges Gewicht (in Kg) für diesen Preis.</td>
-                                        <td>Versandkosten für Gewicht in EUR.</td>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php foreach ($zones as $index => $zone) { ?>
-                                        <?php
-                                        $name_weight_max   = sprintf(
-                                            '%s[shipping][international][economy][%s][%s][weight-max]',
-                                            \grandeljayfedex::class,
-                                            $zone_name,
-                                            $index
-                                        );
-                                        $name_weight_costs = sprintf(
-                                            '%s[shipping][international][economy][%s][%s][weight-costs]',
-                                            \grandeljayfedex::class,
-                                            $zone_name,
-                                            $index
-                                        );
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <input type="number" step="any" name="<?= $name_weight_max ?>" value="<?= $zone['weight-max'] ?>">
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="<?= $name_weight_costs ?>" value="<?= $zone['weight-costs'] ?>">
-                                            </td>
-                                            <td>
-                                                <button type="button" class="remove">
-                                                    <img src="images/icons/cross.gif">
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-
-                                    <?php
-                                    $name_weight_max   = sprintf(
-                                        '%s[shipping][international][economy][%s][%s][weight-max]',
-                                        \grandeljayfedex::class,
-                                        $zone_name,
-                                        $index + 1
-                                    );
-                                    $name_weight_costs = sprintf(
-                                        '%s[shipping][international][economy][%s][%s][weight-costs]',
-                                        \grandeljayfedex::class,
-                                        $zone_name,
-                                        $index + 1
-                                    );
-                                    ?>
-                                    <tr>
-                                        <td>
-                                            <input type="number" step="any" name="<?= $name_weight_max ?>">
-                                        </td>
-                                        <td>
-                                            <input type="number" step="any" name="<?= $name_weight_costs ?>">
-                                        </td>
-                                        <td>
-                                            <button type="button" class="remove">
-                                                <img src="images/icons/cross.gif">
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_GET ?>"><?= $configuration_value ?></textarea>
                         </div>
                     </details>
                 <?php } ?>
@@ -133,7 +60,7 @@ class Shipping
         return $html;
     }
 
-    public static function getPriority(array $priority): string
+    public static function getPriority(): string
     {
         ob_start();
         ?>
@@ -141,67 +68,23 @@ class Shipping
             <summary>Priority</summary>
 
             <div>
-                <?php foreach ($priority as $zone_name => $zones) { ?>
+                <?php foreach (Zone::cases() as $zone) { ?>
+                    <?php
+                    $zone_title          = sprintf('Zone %s', $zone->name);
+                    $configuration_key   = sprintf(
+                        '%s_SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s',
+                        Constants::MODULE_SHIPPING_NAME,
+                        $zone->name
+                    );
+                    $configuration_value = constant($configuration_key);
+                    ?>
                     <details>
-                        <summary>
-                            <?php
-                            $zone_letter = strtoupper(substr($zone_name, -1, 1));
-                            $zone_text   = sprintf('Zone %s', $zone_letter);
-                            $zone        = Zone::fromString($zone_letter);
-
-                            echo $zone_text;
-                            ?>
-                        </summary>
+                        <summary><?= $zone_title ?></summary>
 
                         <div>
                             <p>Betrifft die Länder: <?= implode(', ', Zone::getCountries($zone)) ?>.</p>
 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Gewicht</th>
-                                        <th>Kosten</th>
-                                        <th></th>
-                                    </tr>
-                                    <tr>
-                                        <td>Maximal zulässiges Gewicht (in Kg) für diesen Preis.</td>
-                                        <td>Versandkosten für Gewicht in EUR.</td>
-                                        <td></td>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php foreach ($zones as $index => $zone) { ?>
-                                        <?php
-                                        $name_weight_max   = sprintf(
-                                            '%s[shipping][international][priority][%s][%s][weight-max]',
-                                            \grandeljayfedex::class,
-                                            $zone_name,
-                                            $index
-                                        );
-                                        $name_weight_costs = sprintf(
-                                            '%s[shipping][international][priority][%s][%s][weight-costs]',
-                                            \grandeljayfedex::class,
-                                            $zone_name,
-                                            $index
-                                        );
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <input type="number" step="any" name="<?= $name_weight_max ?>" value="<?= $zone['weight-max'] ?>">
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="<?= $name_weight_costs ?>" value="<?= $zone['weight-costs'] ?>">
-                                            </td>
-                                            <td>
-                                                <button type="button" class="remove">
-                                                    <img src="images/icons/cross.gif">
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
+                            <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_GET ?>"><?= $configuration_value ?></textarea>
                         </div>
                     </details>
                 <?php } ?>

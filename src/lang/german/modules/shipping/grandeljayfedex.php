@@ -23,8 +23,10 @@ $translations = array(
     'ALLOWED_TITLE'     => '',
     'ALLOWED_DESC'      => '',
 
+    'WEIGHT_TITLE'      => 'Gewicht',
+    'WEIGHT_DESC'       => 'Ideal- und Maximalgewicht bestimmen.',
     'SHIPPING_TITLE'    => 'Versand',
-    'SHIPPING_DESC'     => 'Gewicht, Preise und Einstellungen zu den verschiedenen Versandarten von FedEx.',
+    'SHIPPING_DESC'     => 'Gewicht, Preise und Einstellungen zu den verschiedenen Versandarten von DHL Express.',
     'SURCHARGES_TITLE'  => 'Aufschläge',
     'SURCHARGES_DESC'   => 'Einstellungen bezüglich der Aufschläge',
 );

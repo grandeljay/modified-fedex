@@ -13,7 +13,8 @@ input {
 }
 
 .modulbox .infoBoxContent input[type="text"],
-.modulbox .infoBoxContent input[type="number"] {
+.modulbox .infoBoxContent input[type="number"],
+.modulbox .infoBoxContent input[type="date"] {
     width: 100%;
     padding: 6px 4px;
 
@@ -29,8 +30,27 @@ input {
 
 .modulbox .infoBoxContent input[type="text"],
 .modulbox .infoBoxContent input[type="number"],
+.modulbox .infoBoxContent input[type="date"],
+.modulbox .infoBoxContent select,
 .modulbox .infoBoxContent textarea {
     width: 100%;
+}
+
+.modulbox .infoBoxContent select {
+    padding: 6px 4px;
+}
+
+.modulbox .infoBoxContent textarea {
+    height: 12em;
+
+    resize: vertical;
+}
+.modulbox .infoBoxContent textarea[readonly] {
+    user-select: none;
+    cursor: wait;
+
+    color: #929292;
+    background-color: #f0f0f0;
 }
 
 /**
@@ -157,4 +177,12 @@ details > summary > h6 {
 /** Content */
 details > div {
     padding: 10px;
+}
+
+details > div > :first-child {
+    margin-top: 0;
+}
+
+details > div > :last-child {
+    margin-bottom: 0;
 }

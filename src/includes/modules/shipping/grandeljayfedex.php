@@ -11,8 +11,8 @@
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 
-use Grandeljay\Fedex\{Constants, Installer, Quote};
-use Grandeljay\Fedex\Field\{Shipping, Surcharges};
+use Grandeljay\Fedex\{Constants, Installer, Quote, Zone};
+use Grandeljay\Fedex\Field\{Shipping, Surcharges, Weight};
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
 
 class grandeljayfedex extends StdModule
@@ -22,22 +22,23 @@ class grandeljayfedex extends StdModule
     public const VERSION     = '0.1.2';
     public array $properties = array();
 
-    public static function shipping(string $value, string $option): string
+    public static function weight(): string
     {
-        $decoded       = json_decode(base64_decode($value), true);
-        $international = $decoded['international'];
+        $html = Weight::getWeight();
 
-        $html = Shipping::getInternational($international);
+        return $html;
+    }
+
+    public static function shipping(): string
+    {
+        $html = Shipping::getInternational();
 
         return $html;
     }
 
     public static function surcharges(string $value, string $option): string
     {
-        $decoded    = json_decode(base64_decode($value), true);
-        $surcharges = $decoded;
-
-        $html = Surcharges::getSurcharges($surcharges);
+        $html = Surcharges::getSurcharges($option);
 
         return $html;
     }
@@ -54,11 +55,11 @@ class grandeljayfedex extends StdModule
     {
         parent::__construct(Constants::MODULE_SHIPPING_NAME);
 
+        $this->addKey('WEIGHT');
         $this->addKey('SHIPPING');
         $this->addKey('SURCHARGES');
 
-        $this->installer               = new Installer();
-        $this->properties['form_edit'] = xtc_draw_form('modules', 'grandeljayfedex.php');
+        $this->installer = new Installer();
     }
 
     public function install()
@@ -66,10 +67,41 @@ class grandeljayfedex extends StdModule
         parent::install();
 
         $this->addConfiguration('ALLOWED', '', 6, 1);
-        $this->addConfiguration('SHIPPING', $this->installer->getShipping(), 6, 1, \grandeljayfedex::class . '::shipping(');
-        $this->addConfiguration('SURCHARGES', $this->installer->getSurcharges(), 6, 1, \grandeljayfedex::class . '::surcharges(');
+
+        $this->addConfigurationWeight();
+        $this->addConfigurationShipping();
+
+        $this->addConfiguration('SURCHARGES', $this->installer->getSurcharges(), 6, 1, self::class . '::surcharges(');
 
         $this->installer->installAdminAccess();
+    }
+
+    private function addConfigurationWeight(): void
+    {
+        $this->addConfiguration('WEIGHT', '', 6, 1, self::class . '::weight(');
+        $this->addConfiguration('WEIGHT_IDEAL', round(SHIPPING_MAX_WEIGHT * 0.75), 6, 1);
+        $this->addConfiguration('WEIGHT_MAXIMUM', SHIPPING_MAX_WEIGHT, 6, 1);
+    }
+
+    private function addConfigurationShipping(): void
+    {
+        $this->addConfiguration('SHIPPING', '', 6, 1, self::class . '::shipping(');
+
+        foreach (Zone::cases() as $zone) {
+            $configuration_key    = sprintf('SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
+            $configuration_method = sprintf('getShippingInternationalEconomyZone%s', $zone->name);
+            $configuration_value  = $this->installer->$configuration_method();
+
+            $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
+        }
+
+        foreach (Zone::cases() as $zone) {
+            $configuration_key    = sprintf('SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s', $zone->name);
+            $configuration_method = sprintf('getShippingInternationalPriorityZone%s', $zone->name);
+            $configuration_value  = $this->installer->$configuration_method();
+
+            $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
+        }
     }
 
     public function remove()
@@ -77,10 +109,36 @@ class grandeljayfedex extends StdModule
         parent::remove();
 
         $this->removeConfiguration('ALLOWED');
-        $this->removeConfiguration('SHIPPING');
+
+        $this->removeConfigurationWeight();
+        $this->removeConfigurationShipping();
+
         $this->removeConfiguration('SURCHARGES');
 
         $this->installer->uninstallAdminAccess();
+    }
+
+    private function removeConfigurationWeight(): void
+    {
+        $this->removeConfiguration('WEIGHT');
+        $this->removeConfiguration('WEIGHT_IDEAL');
+        $this->removeConfiguration('WEIGHT_MAXIMUM');
+    }
+
+    private function removeConfigurationShipping(): void
+    {
+        $this->removeConfiguration('SHIPPING');
+
+        foreach (Zone::cases() as $zone) {
+            $configuration_key = sprintf('SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
+
+            $this->removeConfiguration($configuration_key);
+        }
+
+        foreach (Zone::cases() as $zone) {
+            $configuration_key = sprintf('SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s', $zone->name);
+            $this->removeConfiguration($configuration_key);
+        }
     }
 
     /**
@@ -94,7 +152,7 @@ class grandeljayfedex extends StdModule
         $quote  = new Quote();
         $quotes = $quote->getQuote();
 
-        if (is_array($quotes)) {
+        if (is_array($quotes) && !$quote->exceedsMaximumWeight()) {
             $this->quotes = $quotes;
         }
 
