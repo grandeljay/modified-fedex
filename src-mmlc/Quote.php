@@ -4,17 +4,26 @@ namespace Grandeljay\Fedex;
 
 class Quote
 {
-    private function getShippingCosts(string $method, string $zone_name): float
+    private function getShippingCosts(string $method, Zone $zone): float
     {
         global $shipping_weight;
 
-        $shipping = constant(Constants::MODULE_SHIPPING_NAME . '_SHIPPING');
-        $shipping = json_decode($shipping, true);
+        switch ($method) {
+            case 'economy':
+                $configuration_key   = sprintf(Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
+                $configuration_value = constant($configuration_key);
+                $costs_list          = json_decode($configuration_value, true);
+                break;
 
-        $costs_list = $shipping['international'][$method][$zone_name] ?? null;
+            case 'priority':
+                $configuration_key   = sprintf(Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s', $zone->name);
+                $configuration_value = constant($configuration_key);
+                $costs_list          = json_decode($configuration_value, true);
+                break;
 
-        if (null === $costs_list) {
-            return 0;
+            default:
+                $costs_list = array();
+                break;
         }
 
         usort(
@@ -41,10 +50,21 @@ class Quote
     {
         $surcharges = 0;
 
-        $option  = constant(Constants::MODULE_SHIPPING_NAME . '_SURCHARGES');
-        $decoded = json_decode($option, true);
+        $configuration_value = constant(Constants::MODULE_SHIPPING_NAME . '_SURCHARGES');
+        $decoded             = json_decode($configuration_value, true);
 
         foreach ($decoded as $surcharge) {
+            if (isset($surcharge['date-from'], $surcharge['date-to'])) {
+                $date_now  = time();
+                $date_from = strtotime($surcharge['date-from']);
+                $date_to   = strtotime($surcharge['date-to']);
+
+                /** Skip iteration if date critera doesn't match */
+                if ($date_now < $date_from || $date_now > $date_to) {
+                    continue;
+                }
+            }
+
             $amount = match ($surcharge['type']) {
                 'fixed'   => $surcharge['costs'],
                 'percent' => $method_costs * ($surcharge['costs'] / 100),
@@ -72,18 +92,16 @@ class Quote
             return null;
         }
 
-        $country_zone_name = 'zone_' . strtolower($country_zone->name);
-
         $methods = array();
 
         $method_economy = array(
             'id'    => 'economy',
             'title' => sprintf(
-                'FedEx Economy (%s kg)<!-- BREAK -->Zone %s',
+                'Fedex Economy (%s kg)<!-- BREAK -->Zone %s',
                 round($shipping_weight, 2),
                 $country_zone->name
             ),
-            'cost'  => $this->getShippingCosts('economy', $country_zone_name),
+            'cost'  => $this->getShippingCosts('economy', $country_zone),
             'type'  => 'standard',
         );
         if ($method_economy['cost'] > 0) {
@@ -93,11 +111,11 @@ class Quote
         $method_priority = array(
             'id'    => 'priority',
             'title' => sprintf(
-                'FedEx Priority (%s kg)<!-- BREAK -->Zone %s',
+                'Fedex Priority (%s kg)<!-- BREAK -->Zone %s',
                 round($shipping_weight, 2),
                 $country_zone->name
             ),
-            'cost'  => $this->getShippingCosts('priority', $country_zone_name),
+            'cost'  => $this->getShippingCosts('priority', $country_zone),
             'type'  => 'express',
         );
         if ($method_priority['cost'] > 0) {
@@ -111,7 +129,7 @@ class Quote
 
         /** Quote */
         $quote = array(
-            'id'      => self::class,
+            'id'      => \grandeljayfedex::class,
             'module'  => sprintf(
                 constant(Constants::MODULE_SHIPPING_NAME . '_TEXT_TITLE_WEIGHT'),
                 round($shipping_weight, 2)
@@ -119,10 +137,26 @@ class Quote
             'methods' => $methods,
         );
 
-        if (empty($methods)) {
-            return null;
+        return $quote;
+    }
+
+    public function exceedsMaximumWeight(): bool
+    {
+        global $order;
+
+        if (null === $order) {
+            return false;
         }
 
-        return $quote;
+        $configuration_key_weight_max   = Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM';
+        $configuration_value_weight_max = constant($configuration_key_weight_max);
+
+        foreach ($order->products as $product) {
+            if ($product['weight'] >= $configuration_value_weight_max) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
