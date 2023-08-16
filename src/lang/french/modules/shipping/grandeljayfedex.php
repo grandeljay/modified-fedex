@@ -23,6 +23,9 @@ $translations = array(
     'ALLOWED_TITLE'     => '',
     'ALLOWED_DESC'      => '',
 
+    'SORT_ORDER_TITLE'  => 'Ordre de tri',
+    'SORT_ORDER_DESC'   => 'Détermine le tri dans Admin et Checkout. Les chiffres les plus bas sont affichés en premier.',
+
     'WEIGHT_TITLE'      => 'Poids',
     'WEIGHT_DESC'       => 'Déterminer le poids idéal et le poids maximal.',
     'SHIPPING_TITLE'    => 'Expédition',

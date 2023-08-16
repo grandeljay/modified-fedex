@@ -23,6 +23,9 @@ $translations = array(
     'ALLOWED_TITLE'     => '',
     'ALLOWED_DESC'      => '',
 
+    'SORT_ORDER_TITLE'  => 'Sort order',
+    'SORT_ORDER_DESC'   => 'Determines the sorting in the Admin and Checkout. Lowest numbers are displayed first.',
+
     'WEIGHT_TITLE'      => 'Weight',
     'WEIGHT_DESC'       => 'Determine ideal and maximum weight.',
     'SHIPPING_TITLE'    => 'Shipping',

@@ -23,6 +23,9 @@ $translations = array(
     'ALLOWED_TITLE'     => '',
     'ALLOWED_DESC'      => '',
 
+    'SORT_ORDER_TITLE'  => 'Sortierreihenfolge',
+    'SORT_ORDER_DESC'   => 'Bestimmt die Sortierung im Admin und Checkout. Niedrigste Zahlen werden zuerst angezeigt.',
+
     'WEIGHT_TITLE'      => 'Gewicht',
     'WEIGHT_DESC'       => 'Ideal- und Maximalgewicht bestimmen.',
     'SHIPPING_TITLE'    => 'Versand',
