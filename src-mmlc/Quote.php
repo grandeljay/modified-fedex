@@ -4,6 +4,8 @@ namespace Grandeljay\Fedex;
 
 class Quote
 {
+    private array $calculations = array();
+
     private function getShippingCosts(string $method, Zone $zone): float
     {
         global $shipping_weight;
@@ -39,6 +41,12 @@ class Quote
             if ($shipping_weight <= $cost['weight-max']) {
                 $costs = $cost['weight-costs'];
 
+                $this->calculations[$method][] = sprintf(
+                    'Shipping weight of %s kg costs %s €.',
+                    $shipping_weight,
+                    $costs
+                );
+
                 break;
             }
         }
@@ -46,7 +54,7 @@ class Quote
         return $costs;
     }
 
-    private function getSurcharges(float $method_costs): float
+    private function getSurcharges(array $method): float
     {
         $surcharges = 0;
 
@@ -61,14 +69,36 @@ class Quote
 
                 /** Skip iteration if date critera doesn't match */
                 if ($date_now < $date_from || $date_now > $date_to) {
+                    $this->calculations[$method['id']][] = sprintf(
+                        'Surcharge %s has date set: %s - %s. Skipping surcharge...',
+                        $surcharge['name'],
+                        $surcharge['date-from'],
+                        $surcharge['date-to']
+                    );
+
                     continue;
+                } else {
+                    $this->calculations[$method['id']][] = sprintf(
+                        'Surcharge %s has date set: %s - %s. Applying surcharge:',
+                        $surcharge['name'],
+                        $surcharge['date-from'],
+                        $surcharge['date-to']
+                    );
                 }
             }
 
             $amount = match ($surcharge['type']) {
                 'fixed'   => $surcharge['costs'],
-                'percent' => $method_costs * ($surcharge['costs'] / 100),
+                'percent' => $method['cost'] * ($surcharge['costs'] / 100),
             };
+
+            $this->calculations[$method['id']][] = sprintf(
+                'Surcharge %s is %s: %s (%s)',
+                $surcharge['name'],
+                $surcharge['type'],
+                $surcharge['costs'],
+                $amount
+            );
 
             $surcharges += $amount;
         }
@@ -124,7 +154,25 @@ class Quote
 
         /** Surcharges */
         foreach ($methods as &$method) {
-            $method['cost'] += $this->getSurcharges($method['cost']);
+            $method['cost'] += $this->getSurcharges($method);
+        }
+
+        /** Debug information */
+        $user_is_admin = isset($_SESSION['customers_status']['customers_status_id']) && 0 === (int) $_SESSION['customers_status']['customers_status_id'];
+
+        if ($user_is_admin) {
+            foreach ($methods as &$method) {
+                ob_start();
+                ?>
+                <br><br>
+
+                <h3>Debug mode</h3>
+                <?php foreach ($this->calculations[$method['id']] as $calculation) { ?>
+                    <p><?= $calculation ?></p>
+                <?php } ?>
+                <?php
+                $method['title'] .= ob_get_clean();
+            }
         }
 
         /** Quote */
