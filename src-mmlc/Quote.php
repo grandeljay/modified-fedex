@@ -147,6 +147,8 @@ class Quote
             }
         }
 
+        $surcharges += $pick_pack_costs;
+
         return $surcharges;
     }
 
