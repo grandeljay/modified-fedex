@@ -43,6 +43,30 @@ class grandeljayfedex extends StdModule
         return $html;
     }
 
+    public static function userMayAccessAPI(): bool
+    {
+        if (!isset($_SESSION['customer_id'])) {
+            return false;
+        }
+
+        $access_query = xtc_db_query(
+            sprintf(
+                'SELECT *
+                   FROM `%s`
+                  WHERE `customers_id` = %s',
+                TABLE_ADMIN_ACCESS,
+                $_SESSION['customer_id']
+            )
+        );
+        $access       = xtc_db_fetch_array($access_query);
+
+        if (isset($access[self::class]) && '1' === $access[self::class]) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Used by modified to determine the cheapest shipping method. Should
      * contain the return value of the `quote` method.

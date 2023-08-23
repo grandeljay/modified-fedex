@@ -34,10 +34,6 @@ function DOMContentLoaded() {
 
                 fetch(url, options)
                     .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Network response was not ok: ${response.status}`);
-                        }
-
                         return response.text();
                     })
                     .then(html => {
@@ -169,10 +165,6 @@ function inputAddClick() {
 
     fetch(url, options)
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.status}`);
-            }
-
             return response.text();
         })
         .then(html => {

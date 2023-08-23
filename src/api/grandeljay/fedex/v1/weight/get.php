@@ -10,12 +10,17 @@
 
 namespace Grandeljay\Fedex;
 
+use grandeljayfedex;
+
 chdir('../../../../..');
 
 require 'includes/application_top.php';
+require DIR_WS_MODULES . '/shipping/grandeljayfedex.php';
 
-if (rth_is_module_disabled(Constants::MODULE_SHIPPING_NAME)) {
+if (!grandeljayfedex::userMayAccessAPI()) {
     http_response_code(403);
+
+    echo 'Access denied.';
 
     return;
 }
