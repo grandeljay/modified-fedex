@@ -132,6 +132,10 @@ function inputSurchargeChange() {
 
     apiElement.value = JSON.stringify(tableData);
 }
+
+function inputPickPackChange() {
+    inputWeightChange.call(this);
+}
 /** */
 
 /**

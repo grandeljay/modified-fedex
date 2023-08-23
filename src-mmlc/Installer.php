@@ -1172,6 +1172,36 @@ class Installer
         return $surcharges;
     }
 
+    public function getPickPack(): string
+    {
+        $pickPack = json_encode(
+            array(
+                array(
+                    'weight-max'   => '1',
+                    'weight-costs' => '1.3',
+                ),
+                array(
+                    'weight-max'   => '5',
+                    'weight-costs' => '1.6',
+                ),
+                array(
+                    'weight-max'   => '10',
+                    'weight-costs' => '2',
+                ),
+                array(
+                    'weight-max'   => '20',
+                    'weight-costs' => '2.6',
+                ),
+                array(
+                    'weight-max'   => '60',
+                    'weight-costs' => '3',
+                ),
+            )
+        );
+
+        return $pickPack;
+    }
+
     public function installAdminAccess(): void
     {
         xtc_db_query(
