@@ -64,7 +64,7 @@ class Quote
         $decoded             = json_decode($configuration_value, true);
 
         foreach ($decoded as $surcharge) {
-            if (isset($surcharge['date-from'], $surcharge['date-to'])) {
+            if (!empty($surcharge['date-from']) && !empty($surcharge['date-to'])) {
                 $date_now  = time();
                 $date_from = strtotime($surcharge['date-from']);
                 $date_to   = strtotime($surcharge['date-to']);
