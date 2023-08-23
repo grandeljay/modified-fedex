@@ -10,10 +10,6 @@
 
 namespace Grandeljay\Fedex;
 
-if (rth_is_module_disabled(Constants::MODULE_SHIPPING_NAME)) {
-    return;
-}
-
 /** Only enqueue JavaScript when module settings are open */
 $grandeljayfedex_admin_screen = array(
     'set'    => 'shipping',
