@@ -10,16 +10,6 @@
 
 namespace Grandeljay\Fedex;
 
-chdir('../../../../..');
-
-require 'includes/application_top.php';
-
-if (rth_is_module_disabled(Constants::MODULE_SHIPPING_NAME)) {
-    http_response_code(403);
-
-    return;
-}
-
 ob_start();
 ?>
 <tr>
