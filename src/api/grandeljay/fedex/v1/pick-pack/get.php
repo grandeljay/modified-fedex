@@ -37,7 +37,7 @@ $entries     = json_decode($jsonDecoded['json'], true, 512, JSON_THROW_ON_ERROR)
 usort(
     $entries,
     function ($entry_a, $entry_b) {
-        return $entry_a['weight'] <=> $entry_b['weight'];
+        return $entry_a['weight-max'] <=> $entry_b['weight-max'];
     }
 );
 
