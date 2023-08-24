@@ -114,6 +114,7 @@ function inputSurchargeChange() {
         let inputName     = tableRow.querySelector('[data-name="name"]');
         let inputCosts    = tableRow.querySelector('[data-name="costs"]');
         let inputType     = tableRow.querySelector('[data-name="type"]');
+        let inputWeight   = tableRow.querySelector('[data-name="weight"]');
         let inputDateFrom = tableRow.querySelector('[data-name="date-from"]');
         let inputDateTo   = tableRow.querySelector('[data-name="date-to"]');
 
@@ -125,6 +126,7 @@ function inputSurchargeChange() {
             'name'      : inputName.value,
             'costs'     : inputCosts.value,
             'type'      : inputType.value,
+            'weight'    : inputWeight.value,
             'date-from' : inputDateFrom.value,
             'date-to'   : inputDateTo.value,
         });

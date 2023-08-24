@@ -43,8 +43,9 @@ class Quote
 
                 $this->calculations[$method][] = array(
                     'item'  => sprintf(
-                        'Shipping weight of %s kg',
-                        $shipping_weight
+                        'Shipping weight is %s kg (tarif is %s kg).',
+                        $shipping_weight,
+                        $cost['weight-max']
                     ),
                     'costs' => $costs,
                 );
@@ -58,6 +59,8 @@ class Quote
 
     private function getSurcharges(array $method): float
     {
+        global $order;
+
         $surcharges = 0;
 
         $configuration_value = constant(Constants::MODULE_SHIPPING_NAME . '_SURCHARGES');
@@ -74,7 +77,7 @@ class Quote
                     $this->calculations[$method['id']][] = array(
                         'item'  => sprintf(
                             'Surcharge %s has date set: %s - %s. Skipping surcharge...',
-                            $surcharge['name'],
+                            '<i>' . $surcharge['name'] . '</i>',
                             $surcharge['date-from'],
                             $surcharge['date-to']
                         ),
@@ -86,7 +89,7 @@ class Quote
                     $this->calculations[$method['id']][] = array(
                         'item'  => sprintf(
                             'Surcharge %s has date set: %s - %s. Applying surcharge:',
-                            $surcharge['name'],
+                            '<i>' . $surcharge['name'] . '</i>',
                             $surcharge['date-from'],
                             $surcharge['date-to']
                         ),
@@ -99,18 +102,43 @@ class Quote
                 'fixed'   => $surcharge['costs'],
                 'percent' => $method['cost'] * ($surcharge['costs'] / 100),
             };
+            $symbol = match ($surcharge['type']) {
+                'fixed'   => '€',
+                'percent' => '%',
+            };
 
-            $this->calculations[$method['id']][] = array(
-                'item'  => sprintf(
-                    'Surcharge %s is %s: %s.',
-                    $surcharge['name'],
-                    $surcharge['type'],
-                    $surcharge['costs']
-                ),
-                'costs' => $amount,
-            );
+            if (!empty($surcharge['weight'])) {
+                foreach ($order->products as $product_data) {
+                    if ($product_data['weight'] >= $surcharge['weight']) {
+                        /** Apply the surcharge */
+                        $this->calculations[$method['id']][] = array(
+                            'item'  => sprintf(
+                                'Surcharge %s (%s kg) is %s %s for %s.',
+                                '<i>' . $surcharge['name'] . '</i>',
+                                $surcharge['weight'],
+                                $surcharge['costs'],
+                                $symbol,
+                                $product_data['model']
+                            ),
+                            'costs' => $amount,
+                        );
 
-            $surcharges += $amount;
+                        $surcharges += $amount;
+                    }
+                }
+            } else {
+                $this->calculations[$method['id']][] = array(
+                    'item'  => sprintf(
+                        'Surcharge %s is %s %s.',
+                        '<i>' . $surcharge['name'] . '</i>',
+                        $surcharge['costs'],
+                        $symbol
+                    ),
+                    'costs' => $amount,
+                );
+
+                $surcharges += $amount;
+            }
         }
 
         /**
@@ -137,8 +165,9 @@ class Quote
 
                 $this->calculations[$method['id']][] = array(
                     'item'  => sprintf(
-                        'Pick & Pack for %s kg.',
-                        $shipping_weight
+                        'Pick & Pack for %s kg (tarif is %s kg).',
+                        $shipping_weight,
+                        $cost['weight-max']
                     ),
                     'costs' => $pick_pack_costs,
                 );

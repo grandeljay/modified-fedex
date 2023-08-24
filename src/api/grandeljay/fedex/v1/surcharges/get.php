@@ -49,6 +49,7 @@ ob_start();
             <th>Name</th>
             <th>Kosten</th>
             <th>Art</th>
+            <th>Ab Gewicht</th>
             <th>Von</th>
             <th>Bis</th>
         </tr>
@@ -56,6 +57,7 @@ ob_start();
             <td>Bezeichnung für den Aufschlag.</td>
             <td>Wie hoch ist der Aufschlag?</td>
             <td>Um was für einen Aufschlag handelt es sich?</td>
+            <td>Der Aufschlag wird für Artikel ab des angegebenen Gewichts berechnet.</td>
             <td>Optional. Ab wann der Zuschlag gelten soll.</td>
             <td>Optional. Bis wann der Zuschlag gelten soll.</td>
         </tr>
@@ -64,20 +66,21 @@ ob_start();
     <tbody>
         <?php foreach ($entries as $key => $data) { ?>
             <tr>
-                <td><input data-name="name" value="<?= $data['name'] ?>" type="text" ></td>
-                <td><input data-name="costs" value="<?= $data['costs'] ?>" type="number" step="any"></td>
+                <td><input data-name="name" value="<?= $data['name'] ?? '' ?>" type="text" ></td>
+                <td><input data-name="costs" value="<?= $data['costs'] ?? '' ?>" type="number" step="any"></td>
                 <td>
                     <?php
-                    $selectionFixed   = 'fixed' === $data['type'] ? 'selected' : '';
-                    $selectionPercent = 'percent' === $data['type'] ? 'selected' : '';
+                    $selectionFixed   = 'fixed'   === $data['type'] ?? '' ? 'selected' : '';
+                    $selectionPercent = 'percent' === $data['type'] ?? '' ? 'selected' : '';
                     ?>
                     <select data-name="type">
                         <option <?= $selectionFixed ?> value="fixed">Fest</option>
                         <option <?= $selectionPercent ?> value="percent">Prozentual</option>
                     </select>
                 </td>
+                <td><input data-name="weight" value="<?= $data['weight'] ?? '' ?>" type="number" step="any"></td>
                 <td><input data-name="date-from" type="date" value="<?= $data['date-from'] ?? '' ?>"></td>
-                <td><input data-name="date-to" type="date" value="<?= $data['date-to'] ?? '' ?>"></td>
+                <td><input data-name="date-to"   type="date" value="<?= $data['date-to'] ?? '' ?>"></td>
                 <td>
                     <button type="button" value="remove">
                         <img src="images/icons/cross.gif">

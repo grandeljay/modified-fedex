@@ -21,6 +21,7 @@ ob_start();
             <option value="percent">Prozentual</option>
         </select>
     </td>
+    <td><input data-name="weight" type="number" step="any"></td>
     <td><input data-name="date-from" type="date"></td>
     <td><input data-name="date-to" type="date"></td>
     <td>
