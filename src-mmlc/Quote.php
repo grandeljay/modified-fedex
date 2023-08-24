@@ -209,7 +209,7 @@ class Quote
             $costs_decimals         = $method['cost'] - $costs_without_decimals;
 
             if (0.9 !== $costs_decimals) {
-                $costs_rounded_up = ceil($method['cost']) + 0.9;
+                $costs_rounded_up = $costs_without_decimals + 0.9;
 
                 $this->calculations[$method['id']][] = array(
                     'item'  => sprintf(
