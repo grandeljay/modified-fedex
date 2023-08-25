@@ -8,7 +8,7 @@ class Quote
 
     private function getShippingCosts(string $method, Zone $zone): float
     {
-        global $shipping_weight;
+        global $total_weight;
 
         switch ($method) {
             case 'economy':
@@ -38,13 +38,13 @@ class Quote
         $costs = 0;
 
         foreach ($costs_list as $cost) {
-            if ($shipping_weight <= $cost['weight-max']) {
+            if ($total_weight <= $cost['weight-max']) {
                 $costs = $cost['weight-costs'];
 
                 $this->calculations[$method][] = array(
                     'item'  => sprintf(
                         'Shipping weight is %s kg (tarif is %s kg).',
-                        $shipping_weight,
+                        $total_weight,
                         $cost['weight-max']
                     ),
                     'costs' => $costs,
@@ -52,6 +52,20 @@ class Quote
 
                 break;
             }
+        }
+
+        if (0 === $costs && count($costs_list) >= 1) {
+            $cots_list_last = end($costs_list);
+            $costs          = $cots_list_last['weight-costs'];
+
+            $this->calculations[$method][] = array(
+                'item'  => sprintf(
+                    'No tarif defined for %s kg. Falling back to highest defined tarif (%s kg) for this zone.',
+                    $total_weight,
+                    $cots_list_last['weight-max']
+                ),
+                'costs' => $costs,
+            );
         }
 
         return $costs;
@@ -144,7 +158,7 @@ class Quote
         /**
          * Pick & Pack
          */
-        global $shipping_weight;
+        global $total_weight;
 
         $pick_pack_key   = Constants::MODULE_SHIPPING_NAME . '_PICK_PACK';
         $pick_pack_value = constant($pick_pack_key);
@@ -160,13 +174,13 @@ class Quote
         $pick_pack_costs = 0;
 
         foreach ($pick_pack as $cost) {
-            if ($shipping_weight <= $cost['weight-max']) {
+            if ($total_weight <= $cost['weight-max']) {
                 $pick_pack_costs = $cost['weight-costs'];
 
                 $this->calculations[$method['id']][] = array(
                     'item'  => sprintf(
                         'Pick & Pack for %s kg (tarif is %s kg).',
-                        $shipping_weight,
+                        $total_weight,
                         $cost['weight-max']
                     ),
                     'costs' => $pick_pack_costs,
@@ -183,7 +197,7 @@ class Quote
 
     public function getQuote(): ?array
     {
-        global $order, $shipping_weight;
+        global $order, $total_weight;
 
         $country_code = $order->delivery['country']['iso_code_2'] ?? null;
 
@@ -203,7 +217,7 @@ class Quote
             'id'    => 'economy',
             'title' => sprintf(
                 'Fedex Economy (%s kg)<!-- BREAK -->Zone %s',
-                round($shipping_weight, 2),
+                round($total_weight, 2),
                 $country_zone->name
             ),
             'cost'  => $this->getShippingCosts('economy', $country_zone),
@@ -217,7 +231,7 @@ class Quote
             'id'    => 'priority',
             'title' => sprintf(
                 'Fedex Priority (%s kg)<!-- BREAK -->Zone %s',
-                round($shipping_weight, 2),
+                round($total_weight, 2),
                 $country_zone->name
             ),
             'cost'  => $this->getShippingCosts('priority', $country_zone),
@@ -294,7 +308,7 @@ class Quote
             'id'      => \grandeljayfedex::class,
             'module'  => sprintf(
                 constant(Constants::MODULE_SHIPPING_NAME . '_TEXT_TITLE_WEIGHT'),
-                round($shipping_weight, 2)
+                round($total_weight, 2)
             ),
             'methods' => $methods,
         );
