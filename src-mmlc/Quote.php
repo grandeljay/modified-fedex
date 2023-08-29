@@ -316,19 +316,31 @@ class Quote
         return $quote;
     }
 
+    /**
+     * The total shipping weight should not exceed `WEIGHT_MAXIMUM`. Individual
+     * product weight should not exceed 45 kg.
+     *
+     * TODO: Add a setting to configure the 45 kg.
+     *
+     * @return bool
+     */
     public function exceedsMaximumWeight(): bool
     {
-        global $order;
+        global $order, $total_weight;
 
         if (null === $order) {
-            return false;
+            return true;
         }
 
         $configuration_key_weight_max   = Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM';
         $configuration_value_weight_max = constant($configuration_key_weight_max);
 
+        if ($total_weight > $configuration_value_weight_max) {
+            return true;
+        }
+
         foreach ($order->products as $product) {
-            if ($product['weight'] >= $configuration_value_weight_max) {
+            if ($product['weight'] >= 45) {
                 return true;
             }
         }
