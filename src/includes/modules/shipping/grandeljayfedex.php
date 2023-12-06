@@ -75,6 +75,13 @@ class grandeljayfedex extends StdModule
      */
     public array $quotes = array();
 
+    /**
+     * Used to calculate the tax.
+     *
+     * @var int
+     */
+    public int $tax_class = 1;
+
     public function __construct()
     {
         parent::__construct(Constants::MODULE_SHIPPING_NAME);
