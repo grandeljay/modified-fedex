@@ -86,6 +86,8 @@ class grandeljayfedex extends StdModule
     {
         parent::__construct(Constants::MODULE_SHIPPING_NAME);
 
+        $this->checkForUpdate(true);
+
         $this->addKey('SORT_ORDER');
 
         $this->addKey('WEIGHT');
@@ -141,6 +143,17 @@ class grandeljayfedex extends StdModule
     {
         $this->addConfiguration('SURCHARGES', $this->installer->getSurcharges(), 6, 1, self::class . '::surcharges(');
         $this->addConfiguration('PICK_PACK', $this->installer->getPickPack(), 6, 1);
+    }
+
+    protected function updateSteps(): int
+    {
+        if (version_compare($this->getVersion(), self::VERSION, '<')) {
+            $this->setVersion(self::VERSION);
+
+            return self::UPDATE_SUCCESS;
+        }
+
+        return self::UPDATE_NOTHING;
     }
 
     public function remove()
