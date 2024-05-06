@@ -167,7 +167,7 @@ class Quote
             if ($total_weight <= $cost['weight-max']) {
                 $pick_pack_costs = $cost['weight-costs'];
 
-                $method['costs']         += $pick_pack_costs;
+                $method['cost']          += $pick_pack_costs;
                 $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Pick & Pack for <code>%01.2f</code> kg (tarif is <code>%01.2f</code> kg).',
