@@ -4,13 +4,11 @@ namespace Grandeljay\Fedex;
 
 class Quote
 {
-    private array $calculations = array();
-
-    private function getShippingCosts(string $method, Zone $zone): float
+    private function setShippingCosts(array &$method, Zone $zone): void
     {
         global $total_weight;
 
-        switch ($method) {
+        switch ($method['id']) {
             case 'economy':
                 $configuration_key   = sprintf(Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
                 $configuration_value = constant($configuration_key);
@@ -35,30 +33,28 @@ class Quote
             }
         );
 
-        $costs = 0;
-
         foreach ($costs_list as $cost) {
             if ($total_weight <= $cost['weight-max']) {
-                $costs = $cost['weight-costs'];
-
-                $this->calculations[$method][] = array(
+                $method['cost']          += $cost['weight-costs'];
+                $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Shipping weight is <code>%01.2f</code> kg (tarif is <code>%01.2f</code> kg).',
                         $total_weight,
                         $cost['weight-max']
                     ),
-                    'costs' => $costs,
+                    'costs' => $cost['weight-costs'],
                 );
 
                 break;
             }
         }
 
-        if (0 === $costs && count($costs_list) >= 1) {
+        if (0 === $method['cost'] && count($costs_list) >= 1) {
             $cots_list_last = end($costs_list);
             $costs          = $cots_list_last['weight-costs'];
 
-            $this->calculations[$method][] = array(
+            $method['cost']          += $cost;
+            $method['calculations'][] = array(
                 'item'  => sprintf(
                     'No tarif defined for <code>%01.2f</code> kg. Falling back to highest defined tarif (<code>%01.2f</code> kg) for this zone.',
                     $total_weight,
@@ -67,15 +63,11 @@ class Quote
                 'costs' => $costs,
             );
         }
-
-        return $costs;
     }
 
-    private function getSurcharges(array $method): float
+    private function setSurcharges(array &$method): void
     {
         global $order;
-
-        $surcharges = 0;
 
         $configuration_value = constant(Constants::MODULE_SHIPPING_NAME . '_SURCHARGES');
         $decoded             = json_decode($configuration_value, true);
@@ -88,7 +80,7 @@ class Quote
 
                 /** Skip iteration if date critera doesn't match */
                 if ($date_now < $date_from || $date_now > $date_to) {
-                    $this->calculations[$method['id']][] = array(
+                    $method['calculations'][] = array(
                         'item'  => sprintf(
                             'Surcharge %s has date set: %s - %s. Skipping surcharge...',
                             '<i>' . $surcharge['name'] . '</i>',
@@ -100,7 +92,7 @@ class Quote
 
                     continue;
                 } else {
-                    $this->calculations[$method['id']][] = array(
+                    $method['calculations'][] = array(
                         'item'  => sprintf(
                             'Surcharge %s has date set: %s - %s. Applying surcharge:',
                             '<i>' . $surcharge['name'] . '</i>',
@@ -125,7 +117,8 @@ class Quote
                 foreach ($order->products as $product_data) {
                     if ($product_data['weight'] >= $surcharge['weight']) {
                         /** Apply the surcharge */
-                        $this->calculations[$method['id']][] = array(
+                        $method['cost']          += $amount;
+                        $method['calculations'][] = array(
                             'item'  => sprintf(
                                 'Surcharge %s (<code>%01.2f</code> kg) is <code>%01.2f</code> %s for %s.',
                                 '<i>' . $surcharge['name'] . '</i>',
@@ -136,12 +129,11 @@ class Quote
                             ),
                             'costs' => $amount,
                         );
-
-                        $surcharges += $amount;
                     }
                 }
             } else {
-                $this->calculations[$method['id']][] = array(
+                $method['cost']          += $amount;
+                $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Surcharge %s is <code>%01.2f</code> %s.',
                         '<i>' . $surcharge['name'] . '</i>',
@@ -150,8 +142,6 @@ class Quote
                     ),
                     'costs' => $amount,
                 );
-
-                $surcharges += $amount;
             }
         }
 
@@ -177,7 +167,8 @@ class Quote
             if ($total_weight <= $cost['weight-max']) {
                 $pick_pack_costs = $cost['weight-costs'];
 
-                $this->calculations[$method['id']][] = array(
+                $method['costs']         += $pick_pack_costs;
+                $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Pick & Pack for <code>%01.2f</code> kg (tarif is <code>%01.2f</code> kg).',
                         $total_weight,
@@ -189,10 +180,6 @@ class Quote
                 break;
             }
         }
-
-        $surcharges += $pick_pack_costs;
-
-        return $surcharges;
     }
 
     private function getShippingWeight(): float
@@ -242,36 +229,54 @@ class Quote
         $methods = array();
 
         $method_economy = array(
-            'id'    => 'economy',
-            'title' => sprintf(
+            'id'           => 'economy',
+            'title'        => sprintf(
                 'Fedex Economy (%s kg)<!-- BREAK -->Zone %s',
                 round($shipping_weight, 2),
                 $country_zone->name
             ),
-            'cost'  => $this->getShippingCosts('economy', $country_zone),
-            'type'  => 'standard',
+            'cost'         => 0,
+            'calculations' => array(),
+            'type'         => 'standard',
         );
+
+        $this->setShippingCosts($method_economy, $country_zone);
+
         if ($method_economy['cost'] > 0) {
             $methods[] = $method_economy;
         }
 
         $method_priority = array(
-            'id'    => 'priority',
-            'title' => sprintf(
+            'id'           => 'priority',
+            'title'        => sprintf(
                 'Fedex Priority (%s kg)<!-- BREAK -->Zone %s',
                 round($shipping_weight, 2),
                 $country_zone->name
             ),
-            'cost'  => $this->getShippingCosts('priority', $country_zone),
-            'type'  => 'express',
+            'cost'         => 0,
+            'calculations' => array(),
+            'type'         => 'express',
         );
+
+        $this->setShippingCosts($method_priority, $country_zone);
+
         if ($method_priority['cost'] > 0) {
             $methods[] = $method_priority;
         }
 
         /** Surcharges */
         foreach ($methods as &$method) {
-            $method['cost'] += $this->getSurcharges($method);
+            $this->setSurcharges($method);
+        }
+
+        if (\class_exists('Grandeljay\ShippingConditions\Surcharges')) {
+            $surcharges = new \Grandeljay\ShippingConditions\Surcharges(
+                \grandeljayfedex::class,
+                $methods
+            );
+            $surcharges->setSurcharges();
+
+            $methods = $surcharges->getMethods();
         }
 
         /** Round up */
@@ -282,14 +287,13 @@ class Quote
             if (0.9 !== $costs_decimals) {
                 $costs_rounded_up = $costs_without_decimals + 0.9;
 
-                $this->calculations[$method['id']][] = array(
+                $method['cost']          += $costs_rounded_up;
+                $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Rounding up',
                     ),
-                    'costs' => $costs_rounded_up - $method['cost'],
+                    'costs' => $costs_rounded_up,
                 );
-
-                $method['cost'] = $costs_rounded_up;
             }
         }
 
@@ -304,29 +308,24 @@ class Quote
                 ?>
                 <br><br>
 
-                <h3 style="margin-bottom: 0.2rem;">Debug mode</h3>
-                <style type="text/css">
-                    table.calculations :is(th, td).number {
-                        text-align: right;
-                    }
-                </style>
-                <table class="calculations">
+                <h3>Debug mode</h3>
+                <table>
                     <thead>
                         <tr>
                             <th>Item</th>
-                            <th class="number">Costs</th>
-                            <th class="number">Total</th>
+                            <th>Costs</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <?php foreach ($this->calculations[$method['id']] as $calculation) { ?>
+                        <?php foreach ($method['calculations'] as $calculation) { ?>
                             <?php $total += $calculation['costs']; ?>
 
                             <tr>
                                 <td><?= $calculation['item'] ?></td>
-                                <td class="number"><code><?= sprintf('%01.2f', $calculation['costs']) ?></code></td>
-                                <td class="number"><code><?= sprintf('%01.2f', $total) ?></code></td>
+                                <td><?= \sprintf('%01.2f', $calculation['costs']) ?></td>
+                                <td><?= \sprintf('%01.2f', $total) ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
