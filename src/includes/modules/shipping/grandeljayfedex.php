@@ -19,7 +19,7 @@ class grandeljayfedex extends StdModule
 {
     private Installer $installer;
 
-    public const VERSION     = '0.8.2';
+    public const VERSION     = '0.8.3';
     public array $properties = array();
 
     public static function weight(): string
