@@ -53,7 +53,7 @@ class Quote
             $cots_list_last = end($costs_list);
             $costs          = $cots_list_last['weight-costs'];
 
-            $method['cost']          += $cost;
+            $method['cost']          += $costs;
             $method['calculations'][] = array(
                 'item'  => sprintf(
                     'No tarif defined for <code>%01.2f</code> kg. Falling back to highest defined tarif (<code>%01.2f</code> kg) for this zone.',
