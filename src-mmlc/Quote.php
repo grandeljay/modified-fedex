@@ -285,14 +285,14 @@ class Quote
             $costs_decimals         = $method['cost'] - $costs_without_decimals;
 
             if (0.9 !== $costs_decimals) {
-                $costs_rounded_up = $costs_without_decimals + 0.9;
+                $costs = 0.9 - $costs_decimals;
 
-                $method['cost']          += $costs_rounded_up;
+                $method['cost']          += $costs;
                 $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Rounding up',
                     ),
-                    'costs' => $costs_rounded_up,
+                    'costs' => $costs,
                 );
             }
         }
