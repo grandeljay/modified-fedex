@@ -120,11 +120,9 @@ class Quote
                         $method['cost']          += $amount;
                         $method['calculations'][] = array(
                             'item'  => sprintf(
-                                'Surcharge %s (<code>%01.2f</code> kg) is <code>%01.2f</code> %s for %s.',
+                                'Surcharge %s (<code>%01.2f</code> kg) for %s.',
                                 '<i>' . $surcharge['name'] . '</i>',
                                 $surcharge['weight'],
-                                $surcharge['costs'],
-                                $symbol,
                                 $product_data['model']
                             ),
                             'costs' => $amount,
@@ -182,37 +180,9 @@ class Quote
         }
     }
 
-    private function getShippingWeight(): float
-    {
-        global $order;
-
-        $shipping_weight = 0;
-
-        foreach ($order->products as $product) {
-            $length = $product['length'] ?? 0;
-            $width  = $product['width']  ?? 0;
-            $height = $product['height'] ?? 0;
-            $weight = ($product['weight'] ?? 0) * $product['quantity'];
-
-            if ($length > 0 && $width > 0 && $height > 0) {
-                $volumetric_weight = (($length * $width * $height) / 5000) * $product['quantity'];
-
-                if ($volumetric_weight > $weight) {
-                    $weight = $volumetric_weight;
-                }
-            }
-
-            $shipping_weight += $weight;
-        }
-
-        return $shipping_weight;
-    }
-
     public function getQuote(): ?array
     {
         global $order;
-
-        $shipping_weight = $this->getShippingWeight();
 
         $country_code = $order->delivery['country']['iso_code_2'] ?? null;
 
@@ -226,13 +196,24 @@ class Quote
             return null;
         }
 
-        $methods = array();
+        $shipping_weight_ideal   = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_IDEAL');
+        $shipping_weight_maximum = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM');
 
+        $order_packer = new \Grandeljay\ShippingModuleHelper\OrderPacker();
+        $order_packer->setIdealWeight($shipping_weight_ideal);
+        $order_packer->setMaximumWeight($shipping_weight_maximum);
+        $order_packer->packOrder();
+
+        $boxes            = $order_packer->getBoxes();
+        $weight           = $order_packer->getWeight();
+        $weight_formatted = $order_packer->getWeightFormatted();
+
+        $methods        = array();
         $method_economy = array(
             'id'           => 'economy',
             'title'        => sprintf(
-                'Fedex Economy (%s kg)<!-- BREAK -->Zone %s',
-                round($shipping_weight, 2),
+                'Fedex Economy (%s)<!-- BREAK -->Zone %s',
+                $weight_formatted,
                 $country_zone->name
             ),
             'cost'         => 0,
@@ -249,8 +230,8 @@ class Quote
         $method_priority = array(
             'id'           => 'priority',
             'title'        => sprintf(
-                'Fedex Priority (%s kg)<!-- BREAK -->Zone %s',
-                round($shipping_weight, 2),
+                'Fedex Priority (%s)<!-- BREAK -->Zone %s',
+                $weight_formatted,
                 $country_zone->name
             ),
             'cost'         => 0,
@@ -344,7 +325,7 @@ class Quote
             'id'      => \grandeljayfedex::class,
             'module'  => sprintf(
                 constant(Constants::MODULE_SHIPPING_NAME . '_TEXT_TITLE_WEIGHT'),
-                round($shipping_weight, 2)
+                $weight
             ),
             'methods' => $methods,
         );
