@@ -285,7 +285,11 @@ class Quote
             $costs_decimals         = $method['cost'] - $costs_without_decimals;
 
             if (0.9 !== $costs_decimals) {
-                $costs = 0.9 - $costs_decimals;
+                if ($costs_decimals > 0.9) {
+                    $costs = 1.9 - $costs_decimals;
+                } else {
+                    $costs = 0.9 - $costs_decimals;
+                }
 
                 $method['cost']          += $costs;
                 $method['calculations'][] = array(
