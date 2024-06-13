@@ -2,6 +2,8 @@
 
 namespace Grandeljay\Fedex;
 
+use Grandeljay\ShippingModuleHelper\OrderPacker;
+
 class Quote
 {
     private function setShippingCosts(array &$method, Zone $zone): void
@@ -199,7 +201,7 @@ class Quote
         $shipping_weight_ideal   = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_IDEAL');
         $shipping_weight_maximum = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM');
 
-        $order_packer = new \Grandeljay\ShippingModuleHelper\OrderPacker();
+        $order_packer = new OrderPacker();
         $order_packer->setIdealWeight($shipping_weight_ideal);
         $order_packer->setMaximumWeight($shipping_weight_maximum);
         $order_packer->packOrder();
