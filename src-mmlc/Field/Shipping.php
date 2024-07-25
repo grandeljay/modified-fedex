@@ -8,9 +8,11 @@ class Shipping
 {
     public static function getInternational(): string
     {
+        $class = Field::getFieldClasses();
+
         ob_start();
         ?>
-        <details>
+        <details class="<?= $class ?>">
             <summary>International</summary>
 
             <div>
@@ -26,9 +28,11 @@ class Shipping
 
     public static function getEconomy(): string
     {
+        $class = Field::getFieldClasses();
+
         ob_start();
         ?>
-        <details>
+        <details class="<?= $class ?>">
             <summary>Economy</summary>
 
             <div>
@@ -41,14 +45,27 @@ class Shipping
                         $zone->name
                     );
                     $configuration_value = constant($configuration_key);
+
+                    /** Apply factor */
+                    $factor              = $_GET['factor'] ?? 1;
+                    $tariffs_json        = \json_decode($configuration_value, true);
+                    $tariffs             = \array_map(
+                        function (array $tariff) use ($factor) {
+                            $tariff['weight-costs'] *= $factor;
+
+                            return $tariff;
+                        },
+                        $tariffs_json
+                    );
+                    $configuration_value = \json_encode($tariffs);
                     ?>
-                    <details>
+                    <details class="<?= $class ?>">
                         <summary><?= $zone_title ?></summary>
 
                         <div>
                             <p>Betrifft die Länder: <?= implode(', ', Zone::getCountries($zone)) ?>.</p>
 
-                            <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_GET ?>"><?= $configuration_value ?></textarea>
+                            <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_GET ?>" data-factor=<?= $_GET['factor'] ?? 1 ?>><?= $configuration_value ?></textarea>
                         </div>
                     </details>
                 <?php } ?>
@@ -62,9 +79,11 @@ class Shipping
 
     public static function getPriority(): string
     {
+        $class = Field::getFieldClasses();
+
         ob_start();
         ?>
-        <details>
+        <details class="<?= $class ?>">
             <summary>Priority</summary>
 
             <div>
@@ -77,14 +96,28 @@ class Shipping
                         $zone->name
                     );
                     $configuration_value = constant($configuration_key);
+
+                    /** Apply factor */
+                    $factor              = $_GET['factor'] ?? 1;
+                    $tariffs_json        = \json_decode($configuration_value, true);
+                    $tariffs             = \array_map(
+                        function (array $tariff) use ($factor) {
+                            $tariff['weight-costs'] *= $factor;
+
+                            return $tariff;
+                        },
+                        $tariffs_json
+                    );
+                    $configuration_value = \json_encode($tariffs);
+
                     ?>
-                    <details>
+                    <details class="<?= $class ?>">
                         <summary><?= $zone_title ?></summary>
 
                         <div>
                             <p>Betrifft die Länder: <?= implode(', ', Zone::getCountries($zone)) ?>.</p>
 
-                            <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_GET ?>"><?= $configuration_value ?></textarea>
+                            <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_GET ?>" data-factor=<?= $_GET['factor'] ?? 1 ?>><?= $configuration_value ?></textarea>
                         </div>
                     </details>
                 <?php } ?>

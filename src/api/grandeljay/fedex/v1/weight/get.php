@@ -33,6 +33,7 @@ if (false === $jsonEncoded) {
 
 $jsonDecoded = json_decode($jsonEncoded, true, 512, JSON_THROW_ON_ERROR);
 $entries     = json_decode($jsonDecoded['json'], true, 512, JSON_THROW_ON_ERROR);
+$factor      = $jsonDecoded['factor'] ?? 1;
 
 usort(
     $entries,
@@ -57,9 +58,13 @@ ob_start();
 
     <tbody>
         <?php foreach ($entries as $data) { ?>
+            <?php
+            $weight_max   = $data['weight-max'];
+            $weight_costs = $data['weight-costs'] * $factor;
+            ?>
             <tr>
-                <td><input type="number" step="any" value="<?= $data['weight-max'] ?>" data-name="weight-max"></td>
-                <td><input type="number" step="any" value="<?= $data['weight-costs'] ?>" data-name="weight-costs"></td>
+                <td><input type="number" step="any" value="<?= $weight_max ?>" data-name="weight-max"></td>
+                <td><input type="number" step="any" value="<?= $weight_costs ?>" data-name="weight-costs"></td>
                 <td>
                     <button type="button" value="remove">
                         <img src="images/icons/cross.gif">

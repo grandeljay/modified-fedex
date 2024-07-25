@@ -12,26 +12,31 @@ use Grandeljay\Fedex\Constants;
 
 $translations = array(
     /** Module */
-    'TITLE'             => 'grandeljay - FedEx',
-    'TEXT_TITLE'        => 'Fedex',
-    'TEXT_TITLE_WEIGHT' => 'Fedex (%s kg)',
-    'LONG_DESCRIPTION'  => 'Ajoute la méthode d\'expédition FedEx dans le checkout.',
-    'STATUS_TITLE'      => 'Statut',
-    'STATUS_DESC'       => 'Sélectionnez Oui pour activer le module et Non pour le désactiver.',
+    'TITLE'                                          => 'grandeljay - FedEx',
+    'TEXT_TITLE'                                     => 'Fedex',
+    'TEXT_TITLE_WEIGHT'                              => 'Fedex (%s kg)',
+    'LONG_DESCRIPTION'                               => 'Ajoute la méthode d\'expédition FedEx dans le checkout.',
+    'STATUS_TITLE'                                   => 'Statut',
+    'STATUS_DESC'                                    => 'Sélectionnez Oui pour activer le module et Non pour le désactiver.',
 
     /** Configuration */
-    'ALLOWED_TITLE'     => '',
-    'ALLOWED_DESC'      => '',
+    'ALLOWED_TITLE'                                  => '',
+    'ALLOWED_DESC'                                   => '',
 
-    'SORT_ORDER_TITLE'  => 'Ordre de tri',
-    'SORT_ORDER_DESC'   => 'Détermine le tri dans Admin et Checkout. Les chiffres les plus bas sont affichés en premier.',
+    'SORT_ORDER_TITLE'                               => 'Ordre de tri',
+    'SORT_ORDER_DESC'                                => 'Détermine le tri dans Admin et Checkout. Les chiffres les plus bas sont affichés en premier.',
 
-    'WEIGHT_TITLE'      => 'Poids',
-    'WEIGHT_DESC'       => 'Déterminer le poids idéal et le poids maximal.',
-    'SHIPPING_TITLE'    => 'Expédition',
-    'SHIPPING_DESC'     => 'Poids, prix et paramètres des différents modes d\'expédition de DHL Express.',
-    'SURCHARGES_TITLE'  => 'Suppléments',
-    'SURCHARGES_DESC'   => 'Options relatives aux majorations',
+    'WEIGHT_TITLE'                                   => 'Poids',
+    'WEIGHT_DESC'                                    => 'Déterminer le poids idéal et le poids maximal.',
+    'SHIPPING_TITLE'                                 => 'Expédition',
+    'SHIPPING_DESC'                                  => 'Poids, prix et paramètres des différents modes d\'expédition de DHL Express.',
+    'SURCHARGES_TITLE'                               => 'Suppléments',
+    'SURCHARGES_DESC'                                => 'Options relatives aux majorations',
+    'BULK_PRICE_CHANGE_PREVIEW_TITLE'                => 'Changement de prix en vrac',
+    'BULK_PRICE_CHANGE_PREVIEW_DESC'                 => 'Multiplie tous les prix d\'expédition du module par un facteur. Les modifications ne sont qu\'un aperçu. Ce n\'est qu\'au moment de l\'enregistrement que les valeurs sont définitivement prises en compte. Avant cela, le facteur peut être modifié autant de fois que nécessaire, sans que les prix ne changent réellement.',
+    'BULK_PRICE_CHANGE_PREVIEW_FACTOR_PREVIEW_TITLE' => 'Aperçu',
+    'BULK_PRICE_CHANGE_PREVIEW_FACTOR_PREVIEW_DESC'  => 'L\'aperçu des facteurs est actif ! Veuillez vérifier tous les prix et cliquer sur "Actualiser" afin d\'appliquer les paramètres de manière permanente. Dans le cas contraire, clique sur "Annuler".',
+    'BULK_PRICE_CHANGE_PREVIEW_FACTOR_RESET_TITLE'   => 'Réinitialiser',
 );
 
 foreach ($translations as $key => $value) {

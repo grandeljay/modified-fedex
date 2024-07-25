@@ -21,6 +21,7 @@ function DOMContentLoaded() {
                 textarea.setAttribute('readonly', 'readonly');
 
                 const url     = textarea.getAttribute('data-url');
+                const factor  = textarea.getAttribute('data-factor');
                 const options = {
                     'method'  : 'POST',
                     'headers' : {
@@ -28,7 +29,8 @@ function DOMContentLoaded() {
                         'Accept'       : 'text/html',
                     },
                     'body'    : JSON.stringify({
-                        'json' : textarea.value
+                        'factor' : factor,
+                        'json'   : textarea.value
                     })
                 };
 
@@ -56,6 +58,22 @@ function DOMContentLoaded() {
     apiElements.forEach(apiElement => {
         observer.observe(apiElement);
     });
+
+    let factor_preview = document.getElementById('factor-preview');
+
+    if (factor_preview) {
+        factor_preview.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            let input_factor = document.querySelector('[name="factor"]');
+            let factor       = input_factor.value;
+            let href         = this.getAttribute('href');
+
+            href = href.replace(/factor=[\d\.]+/, 'factor=' + factor);
+
+            window.location.href = href;
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', DOMContentLoaded);

@@ -96,6 +96,10 @@ details[open] {
     background-color: transparent;
 }
 
+details.factor-active {
+    --border: 1px solid #ff6305;
+}
+
 /** Summary */
 details > summary {
     transition: 0.2s ease color;
@@ -139,6 +143,10 @@ details[open] > summary {
 }
 details[open] > summary::after {
     transform: rotate(90deg);
+}
+
+details.factor-active > summary {
+    background-color: #fdbf8a;
 }
 
 /** Heading */

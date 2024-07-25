@@ -12,7 +12,7 @@
  */
 
 use Grandeljay\Fedex\{Constants, Installer, Quote, Zone};
-use Grandeljay\Fedex\Field\{Shipping, Surcharges, Weight};
+use Grandeljay\Fedex\Field\{BulkPriceChangePreview, Shipping, Surcharges, Weight};
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
 
 class grandeljayfedex extends StdModule
@@ -39,6 +39,13 @@ class grandeljayfedex extends StdModule
     public static function surcharges(string $value, string $option): string
     {
         $html = Surcharges::getSurchargesGroup($value, $option);
+
+        return $html;
+    }
+
+    public static function bulkPriceChangePreview(string $value, string $option): string
+    {
+        $html = BulkPriceChangePreview::getBulkPriceChangePreviewGroup($value, $option);
 
         return $html;
     }
@@ -93,6 +100,7 @@ class grandeljayfedex extends StdModule
         $this->addKey('WEIGHT');
         $this->addKey('SHIPPING');
         $this->addKey('SURCHARGES');
+        $this->addKey('BULK_PRICE_CHANGE_PREVIEW');
 
         $this->installer = new Installer();
     }
@@ -107,6 +115,7 @@ class grandeljayfedex extends StdModule
         $this->addConfigurationWeight();
         $this->addConfigurationShipping();
         $this->addConfigurationSurcharges();
+        $this->addConfigurationBulkPriceChangePreview();
 
         $this->installer->installAdminAccess();
     }
@@ -145,6 +154,11 @@ class grandeljayfedex extends StdModule
         $this->addConfiguration('PICK_PACK', $this->installer->getPickPack(), 6, 1);
     }
 
+    private function addConfigurationBulkPriceChangePreview(): void
+    {
+        $this->addConfiguration('BULK_PRICE_CHANGE_PREVIEW', '', 6, 1, self::class . '::bulkPriceChangePreview(');
+    }
+
     protected function updateSteps(): int
     {
         if (version_compare($this->getVersion(), self::VERSION, '<')) {
@@ -166,6 +180,7 @@ class grandeljayfedex extends StdModule
         $this->removeConfigurationWeight();
         $this->removeConfigurationShipping();
         $this->removeConfigurationSurcharges();
+        $this->removeConfigurationBulkPriceChangePreview();
 
         $this->installer->uninstallAdminAccess();
     }
@@ -197,6 +212,11 @@ class grandeljayfedex extends StdModule
     {
         $this->removeConfiguration('SURCHARGES');
         $this->removeConfiguration('PICK_PACK');
+    }
+
+    private function removeConfigurationBulkPriceChangePreview(): void
+    {
+        $this->removeConfiguration('BULK_PRICE_CHANGE_PREVIEW');
     }
 
     /**
