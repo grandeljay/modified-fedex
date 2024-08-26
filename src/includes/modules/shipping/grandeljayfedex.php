@@ -11,13 +11,16 @@
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 
-use Grandeljay\Fedex\{Constants, Installer, Quote, Zone};
+use Grandeljay\Fedex\{Constants, Quote, Zone};
 use Grandeljay\Fedex\Field\{BulkPriceChangePreview, Shipping, Surcharges, Weight};
+use Grandeljay\Fedex\Traits\Installer;
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
 
 class grandeljayfedex extends StdModule
 {
-    private Installer $installer;
+    use Installer;
+
+    public const VERSION = '0.10.0';
 
     public const VERSION     = '0.10.0';
     public array $properties = array();
@@ -118,45 +121,6 @@ class grandeljayfedex extends StdModule
         $this->addConfigurationBulkPriceChangePreview();
 
         $this->setAdminAccess(self::class);
-    }
-
-    private function addConfigurationWeight(): void
-    {
-        $this->addConfiguration('WEIGHT', '', 6, 1, self::class . '::weight(');
-        $this->addConfiguration('WEIGHT_IDEAL', round(SHIPPING_MAX_WEIGHT * 0.75), 6, 1);
-        $this->addConfiguration('WEIGHT_MAXIMUM', SHIPPING_MAX_WEIGHT, 6, 1);
-    }
-
-    private function addConfigurationShipping(): void
-    {
-        $this->addConfiguration('SHIPPING', '', 6, 1, self::class . '::shipping(');
-
-        foreach (Zone::cases() as $zone) {
-            $configuration_key    = sprintf('SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
-            $configuration_method = sprintf('getShippingInternationalEconomyZone%s', $zone->name);
-            $configuration_value  = $this->installer->$configuration_method();
-
-            $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
-        }
-
-        foreach (Zone::cases() as $zone) {
-            $configuration_key    = sprintf('SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s', $zone->name);
-            $configuration_method = sprintf('getShippingInternationalPriorityZone%s', $zone->name);
-            $configuration_value  = $this->installer->$configuration_method();
-
-            $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
-        }
-    }
-
-    private function addConfigurationSurcharges(): void
-    {
-        $this->addConfiguration('SURCHARGES', $this->installer->getSurcharges(), 6, 1, self::class . '::surcharges(');
-        $this->addConfiguration('PICK_PACK', $this->installer->getPickPack(), 6, 1);
-    }
-
-    private function addConfigurationBulkPriceChangePreview(): void
-    {
-        $this->addConfiguration('BULK_PRICE_CHANGE_PREVIEW', '', 6, 1, self::class . '::bulkPriceChangePreview(');
     }
 
     protected function updateSteps(): int

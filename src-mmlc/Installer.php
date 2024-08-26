@@ -2,6 +2,9 @@
 
 namespace Grandeljay\Fedex;
 
+/**
+ * @deprecated 0.10.0 Use trait instead.
+ */
 class Installer
 {
     public function getShippingInternationalEconomyZoneA(): string
