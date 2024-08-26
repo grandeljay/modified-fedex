@@ -7,7 +7,7 @@ use Grandeljay\Fedex\Field\Shipping;
 use Grandeljay\Fedex\Field\Surcharges;
 use Grandeljay\Fedex\Field\Weight;
 
-class SetFunctions
+trait SetFunctions
 {
     public static function weight(): string
     {

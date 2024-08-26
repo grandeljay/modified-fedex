@@ -1,5 +1,14 @@
 :root {
     --borderInput: 1px solid #a3a3a3;
+    --colourPrimary: #4d138b;
+    --colourPrimaryLight: #795f96;
+    --colourSecondary: #ff6200;
+    --colourSecondaryLight: #ffddc7;
+}
+
+.modulbox td.infoBoxHeading {
+    color: whitesmoke;
+    background-color: var(--colourPrimary);
 }
 
 /**
@@ -193,4 +202,57 @@ details > div > :first-child {
 
 details > div > :last-child {
     margin-bottom: 0;
+}
+
+/**
+ * Tables
+ */
+details.fedex-first > div table {
+    --radius: 4px;
+    --cellPadding: 10px;
+
+    border: 1px solid black;
+    border-color: inherit;
+    border-radius: 0 0 var(--radius) var(--radius);
+    border-spacing: 0;
+}
+
+details.fedex-first > div table > caption {
+    padding: var(--cellPadding);
+
+    color: #fff;
+    background-color: var(--colourPrimary);
+    font-weight: 600;
+
+    border-bottom: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+details.fedex-first > div table > thead {
+    color: whitesmoke;
+    background-color: var(--colourPrimaryLight);
+}
+
+details.fedex-first > div table :is(th, td).align-right {
+    text-align: right;
+}
+
+details.fedex-first > div table :is(th, td).align-center {
+    text-align: center;
+}
+
+details.fedex-first .tables {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-flow: row wrap;
+}
+
+details.fedex-first > div .tables > table {
+    flex: 1 1 auto;
+}
+
+details.fedex-first > div .tables > table tr:nth-of-type(even) {
+    color: whitesmoke;
+    background-color: var(--colourPrimaryLight);
 }

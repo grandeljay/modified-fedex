@@ -27,10 +27,9 @@ trait Installer
 
     private function addConfigurationShippingNational(): void
     {
-        $configuration_key   = \sprintf('configuration[%s_ENVELOPE_0_5_KG]', Constants::MODULE_SHIPPING_NAME);
-        $configuration_value = \defined($configuration_key) ? \constant($configuration_key) : null;
+        $configuration_key = 'ENVELOPE_0_5_KG';
 
-        $this->addConfiguration($configuration_key, $configuration_value ?? 18.14, 6, 1);
+        $this->addConfiguration($configuration_key, 18.14, 6, 1);
     }
 
     private function addConfigurationShippingInternational(): void

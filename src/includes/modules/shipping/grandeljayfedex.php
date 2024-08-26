@@ -83,10 +83,10 @@ class grandeljayfedex extends StdModule
         $this->addConfiguration('ALLOWED', '', 6, 1);
         $this->addConfiguration('SORT_ORDER', 6, 6, 1);
 
-        Installer::addConfigurationWeight();
-        Installer::addConfigurationShipping();
-        Installer::addConfigurationSurcharges();
-        Installer::addConfigurationBulkPriceChangePreview();
+        $this->addConfigurationWeight();
+        $this->addConfigurationShipping();
+        $this->addConfigurationSurcharges();
+        $this->addConfigurationBulkPriceChangePreview();
 
         $this->setAdminAccess(self::class);
     }
