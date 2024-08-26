@@ -12,7 +12,6 @@
  */
 
 use Grandeljay\Fedex\{Constants, Quote, Zone};
-use Grandeljay\Fedex\Field\{BulkPriceChangePreview, Shipping, Surcharges, Weight};
 use Grandeljay\Fedex\Traits\Installer;
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
 
@@ -24,34 +23,6 @@ class grandeljayfedex extends StdModule
 
     public const VERSION     = '0.10.0';
     public array $properties = array();
-
-    public static function weight(): string
-    {
-        $html = Weight::getWeight();
-
-        return $html;
-    }
-
-    public static function shipping(): string
-    {
-        $html = Shipping::getInternational();
-
-        return $html;
-    }
-
-    public static function surcharges(string $value, string $option): string
-    {
-        $html = Surcharges::getSurchargesGroup($value, $option);
-
-        return $html;
-    }
-
-    public static function bulkPriceChangePreview(string $value, string $option): string
-    {
-        $html = BulkPriceChangePreview::getBulkPriceChangePreviewGroup($value, $option);
-
-        return $html;
-    }
 
     public static function userMayAccessAPI(): bool
     {

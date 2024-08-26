@@ -8,6 +8,8 @@ use Grandeljay\Fedex\Zone;
 
 trait Installer
 {
+    use SetFunctions;
+
     private function addConfigurationWeight(): void
     {
         $this->addConfiguration('WEIGHT', '', 6, 1, self::class . '::weight(');
