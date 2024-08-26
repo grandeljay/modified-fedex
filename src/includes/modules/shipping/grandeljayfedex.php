@@ -136,49 +136,8 @@ class grandeljayfedex extends StdModule
     {
         parent::remove();
 
-        $this->removeConfiguration('ALLOWED');
-        $this->removeConfiguration('SORT_ORDER');
-
-        $this->removeConfigurationWeight();
-        $this->removeConfigurationShipping();
-        $this->removeConfigurationSurcharges();
-        $this->removeConfigurationBulkPriceChangePreview();
-
+        $this->removeConfigurationAll();
         $this->deleteAdminAccess(self::class);
-    }
-
-    private function removeConfigurationWeight(): void
-    {
-        $this->removeConfiguration('WEIGHT');
-        $this->removeConfiguration('WEIGHT_IDEAL');
-        $this->removeConfiguration('WEIGHT_MAXIMUM');
-    }
-
-    private function removeConfigurationShipping(): void
-    {
-        $this->removeConfiguration('SHIPPING');
-
-        foreach (Zone::cases() as $zone) {
-            $configuration_key = sprintf('SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
-
-            $this->removeConfiguration($configuration_key);
-        }
-
-        foreach (Zone::cases() as $zone) {
-            $configuration_key = sprintf('SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s', $zone->name);
-            $this->removeConfiguration($configuration_key);
-        }
-    }
-
-    private function removeConfigurationSurcharges(): void
-    {
-        $this->removeConfiguration('SURCHARGES');
-        $this->removeConfiguration('PICK_PACK');
-    }
-
-    private function removeConfigurationBulkPriceChangePreview(): void
-    {
-        $this->removeConfiguration('BULK_PRICE_CHANGE_PREVIEW');
     }
 
     /**
