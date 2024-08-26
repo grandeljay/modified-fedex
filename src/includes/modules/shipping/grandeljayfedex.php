@@ -104,8 +104,6 @@ class grandeljayfedex extends StdModule
         $this->addKey('SHIPPING');
         $this->addKey('SURCHARGES');
         $this->addKey('BULK_PRICE_CHANGE_PREVIEW');
-
-        $this->installer = new Installer();
     }
 
     public function install()
@@ -115,10 +113,10 @@ class grandeljayfedex extends StdModule
         $this->addConfiguration('ALLOWED', '', 6, 1);
         $this->addConfiguration('SORT_ORDER', 6, 6, 1);
 
-        $this->addConfigurationWeight();
-        $this->addConfigurationShipping();
-        $this->addConfigurationSurcharges();
-        $this->addConfigurationBulkPriceChangePreview();
+        Installer::addConfigurationWeight();
+        Installer::addConfigurationShipping();
+        Installer::addConfigurationSurcharges();
+        Installer::addConfigurationBulkPriceChangePreview();
 
         $this->setAdminAccess(self::class);
     }

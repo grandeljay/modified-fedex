@@ -2,6 +2,7 @@
 
 namespace Grandeljay\Fedex\Traits;
 
+use Grandeljay\Fedex\Classes\Defaults;
 use Grandeljay\Fedex\Constants;
 use Grandeljay\Fedex\Zone;
 
@@ -35,7 +36,7 @@ trait Installer
         foreach (Zone::cases() as $zone) {
             $configuration_key    = sprintf('SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
             $configuration_method = sprintf('getShippingInternationalEconomyZone%s', $zone->name);
-            $configuration_value  = $this->installer->$configuration_method();
+            $configuration_value  = Defaults::$configuration_method();
 
             $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
         }
@@ -43,7 +44,7 @@ trait Installer
         foreach (Zone::cases() as $zone) {
             $configuration_key    = sprintf('SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s', $zone->name);
             $configuration_method = sprintf('getShippingInternationalPriorityZone%s', $zone->name);
-            $configuration_value  = $this->installer->$configuration_method();
+            $configuration_value  = Defaults::$configuration_method();
 
             $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
         }
@@ -51,8 +52,8 @@ trait Installer
 
     private function addConfigurationSurcharges(): void
     {
-        $this->addConfiguration('SURCHARGES', $this->installer->getSurcharges(), 6, 1, self::class . '::surcharges(');
-        $this->addConfiguration('PICK_PACK', $this->installer->getPickPack(), 6, 1);
+        $this->addConfiguration('SURCHARGES', Defaults::getSurcharges(), 6, 1, self::class . '::surcharges(');
+        $this->addConfiguration('PICK_PACK', Defaults::getPickPack(), 6, 1);
     }
 
     private function addConfigurationBulkPriceChangePreview(): void

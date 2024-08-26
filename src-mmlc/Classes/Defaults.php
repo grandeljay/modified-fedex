@@ -1,13 +1,10 @@
 <?php
 
-namespace Grandeljay\Fedex;
+namespace Grandeljay\Fedex\Classes;
 
-/**
- * @deprecated 0.10.0 Use trait instead.
- */
-class Installer
+class Defaults
 {
-    public function getShippingInternationalEconomyZoneA(): string
+    public static function getShippingInternationalEconomyZoneA(): string
     {
         $data = array(
             array(
@@ -48,7 +45,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneB(): string
+    public static function getShippingInternationalEconomyZoneB(): string
     {
         $data = array(
             array(
@@ -89,7 +86,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneC(): string
+    public static function getShippingInternationalEconomyZoneC(): string
     {
         $data = array(
             array(
@@ -130,7 +127,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneD(): string
+    public static function getShippingInternationalEconomyZoneD(): string
     {
         $data = array(
             array(
@@ -171,7 +168,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneE(): string
+    public static function getShippingInternationalEconomyZoneE(): string
     {
         $data = array(
             array(
@@ -212,7 +209,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneH(): string
+    public static function getShippingInternationalEconomyZoneH(): string
     {
         $data = array(
             array(
@@ -253,7 +250,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneR(): string
+    public static function getShippingInternationalEconomyZoneR(): string
     {
         $data = array(
             array(
@@ -294,7 +291,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneS(): string
+    public static function getShippingInternationalEconomyZoneS(): string
     {
         $data = array(
             array(
@@ -335,7 +332,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneT(): string
+    public static function getShippingInternationalEconomyZoneT(): string
     {
         $data = array(
             array(
@@ -376,7 +373,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneU(): string
+    public static function getShippingInternationalEconomyZoneU(): string
     {
         $data = array(
             array(
@@ -417,7 +414,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneV(): string
+    public static function getShippingInternationalEconomyZoneV(): string
     {
         $data = array(
             array(
@@ -458,7 +455,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneW(): string
+    public static function getShippingInternationalEconomyZoneW(): string
     {
         $data = array(
             array(
@@ -499,7 +496,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneX(): string
+    public static function getShippingInternationalEconomyZoneX(): string
     {
         $data = array(
             array(
@@ -540,7 +537,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalEconomyZoneY(): string
+    public static function getShippingInternationalEconomyZoneY(): string
     {
         $data = array(
             array(
@@ -581,7 +578,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneA(): string
+    public static function getShippingInternationalPriorityZoneA(): string
     {
         $data = array(
             array(
@@ -622,7 +619,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneB(): string
+    public static function getShippingInternationalPriorityZoneB(): string
     {
         $data = array(
             array(
@@ -663,7 +660,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneC(): string
+    public static function getShippingInternationalPriorityZoneC(): string
     {
         $data = array(
             array(
@@ -704,7 +701,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneD(): string
+    public static function getShippingInternationalPriorityZoneD(): string
     {
         $data = array(
             array(
@@ -745,7 +742,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneE(): string
+    public static function getShippingInternationalPriorityZoneE(): string
     {
         $data = array(
             array(
@@ -786,7 +783,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneH(): string
+    public static function getShippingInternationalPriorityZoneH(): string
     {
         $data = array(
             array(
@@ -827,7 +824,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneR(): string
+    public static function getShippingInternationalPriorityZoneR(): string
     {
         $data = array(
             array(
@@ -868,7 +865,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneS(): string
+    public static function getShippingInternationalPriorityZoneS(): string
     {
         $data = array(
             array(
@@ -909,7 +906,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneT(): string
+    public static function getShippingInternationalPriorityZoneT(): string
     {
         $data = array(
             array(
@@ -950,7 +947,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneU(): string
+    public static function getShippingInternationalPriorityZoneU(): string
     {
         $data = array(
             array(
@@ -991,7 +988,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneV(): string
+    public static function getShippingInternationalPriorityZoneV(): string
     {
         $data = array(
             array(
@@ -1032,7 +1029,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneW(): string
+    public static function getShippingInternationalPriorityZoneW(): string
     {
         $data = array(
             array(
@@ -1073,7 +1070,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneX(): string
+    public static function getShippingInternationalPriorityZoneX(): string
     {
         $data = array(
             array(
@@ -1114,7 +1111,7 @@ class Installer
         return $json;
     }
 
-    public function getShippingInternationalPriorityZoneY(): string
+    public static function getShippingInternationalPriorityZoneY(): string
     {
         $data = array(
             array(
@@ -1155,7 +1152,7 @@ class Installer
         return $json;
     }
 
-    public function getSurcharges(): string
+    public static function getSurcharges(): string
     {
         $surcharges = json_encode(
             array(
@@ -1175,7 +1172,7 @@ class Installer
         return $surcharges;
     }
 
-    public function getPickPack(): string
+    public static function getPickPack(): string
     {
         $pickPack = json_encode(
             array(
