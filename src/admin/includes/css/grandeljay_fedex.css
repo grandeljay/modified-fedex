@@ -211,7 +211,7 @@ details.fedex-first > div table {
     --radius: 4px;
     --cellPadding: 10px;
 
-    border: 1px solid black;
+    border: 1px solid var(--colourPrimary);
     border-color: inherit;
     border-radius: 0 0 var(--radius) var(--radius);
     border-spacing: 0;
