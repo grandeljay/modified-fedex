@@ -1201,27 +1201,4 @@ class Installer
 
         return $pickPack;
     }
-
-    public function installAdminAccess(): void
-    {
-        xtc_db_query(
-            sprintf(
-                'ALTER TABLE `%s`
-                         ADD `%s` INT(1) DEFAULT 1 NOT NULL',
-                TABLE_ADMIN_ACCESS,
-                \grandeljayfedex::class
-            )
-        );
-    }
-
-    public function uninstallAdminAccess(): void
-    {
-        xtc_db_query(
-            sprintf(
-                'ALTER TABLE `%s` DROP COLUMN `%s`',
-                TABLE_ADMIN_ACCESS,
-                \grandeljayfedex::class
-            )
-        );
-    }
 }

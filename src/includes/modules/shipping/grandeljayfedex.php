@@ -117,7 +117,7 @@ class grandeljayfedex extends StdModule
         $this->addConfigurationSurcharges();
         $this->addConfigurationBulkPriceChangePreview();
 
-        $this->installer->installAdminAccess();
+        $this->setAdminAccess(self::class);
     }
 
     private function addConfigurationWeight(): void
@@ -182,7 +182,7 @@ class grandeljayfedex extends StdModule
         $this->removeConfigurationSurcharges();
         $this->removeConfigurationBulkPriceChangePreview();
 
-        $this->installer->uninstallAdminAccess();
+        $this->deleteAdminAccess(self::class);
     }
 
     private function removeConfigurationWeight(): void
