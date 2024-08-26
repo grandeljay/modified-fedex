@@ -21,7 +21,6 @@ class grandeljayfedex extends StdModule
 
     public const VERSION = '0.10.0';
 
-    public const VERSION     = '0.10.0';
     public array $properties = array();
 
     public static function userMayAccessAPI(): bool
