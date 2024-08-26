@@ -9,3 +9,4 @@
  */
 
 define('FILENAME_MODULES', '');
+define('SHIPPING_MAX_WEIGHT', '');
