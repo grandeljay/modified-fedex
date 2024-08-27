@@ -10,3 +10,4 @@
 
 define('FILENAME_MODULES', '');
 define('SHIPPING_MAX_WEIGHT', '');
+define('STORE_COUNTRY', '');
