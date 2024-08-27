@@ -8,8 +8,6 @@ class Quote
 {
     private function setShippingCosts(array &$method, Zone $zone): void
     {
-        global $total_weight;
-
         switch ($method['id']) {
             case 'economy':
                 $configuration_key   = sprintf(Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
@@ -36,12 +34,12 @@ class Quote
         );
 
         foreach ($costs_list as $cost) {
-            if ($total_weight <= $cost['weight-max']) {
+            if ($this->weight <= $cost['weight-max']) {
                 $method['cost']          += $cost['weight-costs'];
                 $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Shipping weight is <code>%01.2f</code> kg (tarif is <code>%01.2f</code> kg).',
-                        $total_weight,
+                        $this->weight,
                         $cost['weight-max']
                     ),
                     'costs' => $cost['weight-costs'],
@@ -59,7 +57,7 @@ class Quote
             $method['calculations'][] = array(
                 'item'  => sprintf(
                     'No tarif defined for <code>%01.2f</code> kg. Falling back to highest defined tarif (<code>%01.2f</code> kg) for this zone.',
-                    $total_weight,
+                    $this->weight,
                     $cots_list_last['weight-max']
                 ),
                 'costs' => $costs,
@@ -148,8 +146,6 @@ class Quote
         /**
          * Pick & Pack
          */
-        global $total_weight;
-
         $pick_pack_key   = Constants::MODULE_SHIPPING_NAME . '_PICK_PACK';
         $pick_pack_value = constant($pick_pack_key);
         $pick_pack       = json_decode($pick_pack_value, true);
@@ -164,14 +160,14 @@ class Quote
         $pick_pack_costs = 0;
 
         foreach ($pick_pack as $cost) {
-            if ($total_weight <= $cost['weight-max']) {
+            if ($this->weight <= $cost['weight-max']) {
                 $pick_pack_costs = $cost['weight-costs'];
 
                 $method['cost']          += $pick_pack_costs;
                 $method['calculations'][] = array(
                     'item'  => sprintf(
                         'Pick & Pack for <code>%01.2f</code> kg (tarif is <code>%01.2f</code> kg).',
-                        $total_weight,
+                        $this->weight,
                         $cost['weight-max']
                     ),
                     'costs' => $pick_pack_costs,
@@ -345,7 +341,7 @@ class Quote
      */
     public function exceedsMaximumWeight(): bool
     {
-        global $order, $total_weight;
+        global $order;
 
         if (null === $order) {
             return true;
@@ -354,7 +350,7 @@ class Quote
         $configuration_key_weight_max   = Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM';
         $configuration_value_weight_max = constant($configuration_key_weight_max);
 
-        if ($total_weight > $configuration_value_weight_max) {
+        if ($this->weight > $configuration_value_weight_max) {
             return true;
         }
 
