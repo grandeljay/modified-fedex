@@ -13,8 +13,8 @@ trait Installer
     private function addConfigurationWeight(): void
     {
         $this->addConfiguration('WEIGHT', '', 6, 1, self::class . '::weight(');
-        $this->addConfiguration('WEIGHT_IDEAL', round(SHIPPING_MAX_WEIGHT * 0.75), 6, 1);
-        $this->addConfiguration('WEIGHT_MAXIMUM', SHIPPING_MAX_WEIGHT, 6, 1);
+        $this->addConfiguration('WEIGHT_IDEAL', 45, 6, 1);
+        $this->addConfiguration('WEIGHT_MAXIMUM', 45, 6, 1);
     }
 
     private function addConfigurationShipping(): void

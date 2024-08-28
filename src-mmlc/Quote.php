@@ -2,10 +2,17 @@
 
 namespace Grandeljay\Fedex;
 
+use Grandeljay\Fedex\Traits\Shipping;
 use Grandeljay\ShippingModuleHelper\OrderPacker;
 
 class Quote
 {
+    use Shipping;
+
+    private array $boxes;
+    private float $weight;
+    private string $weight_formatted;
+
     private function setShippingCosts(array &$method, Zone $zone): void
     {
         switch ($method['id']) {
@@ -178,35 +185,8 @@ class Quote
         }
     }
 
-    public function getQuote(): ?array
+    private function getShippingMethodsInternational(): array
     {
-        global $order;
-
-        $country_code = $order->delivery['country']['iso_code_2'] ?? null;
-
-        if (null === $country_code) {
-            return null;
-        }
-
-        $country_zone = Zone::fromCountry($country_code);
-
-        if (null === $country_zone) {
-            return null;
-        }
-
-        $shipping_weight_ideal   = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_IDEAL');
-        $shipping_weight_maximum = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM');
-
-        $order_packer = new OrderPacker();
-        $order_packer->setIdealWeight($shipping_weight_ideal);
-        $order_packer->setMaximumWeight($shipping_weight_maximum);
-        $order_packer->packOrder();
-
-        $boxes            = $order_packer->getBoxes();
-        $weight           = $order_packer->getWeight();
-        $weight_formatted = $order_packer->getWeightFormatted();
-
-        $methods        = array();
         $method_economy = array(
             'id'           => 'economy',
             'title'        => sprintf(
@@ -242,6 +222,65 @@ class Quote
         if ($method_priority['cost'] > 0) {
             $methods[] = $method_priority;
         }
+    }
+
+    private function getShippingMethods(): array
+    {
+        global $order;
+
+        $country_code = $order->delivery['country']['iso_code_2'] ?? null;
+        $country_id   = $order->delivery['country']['id']         ?? null;
+
+        if (null === $country_code || null === $country_id) {
+            return array();
+        }
+
+        $methods = array();
+
+        /** National */
+        $is_national = $country_id === \STORE_COUNTRY;
+
+        if ($is_national) {
+            $methods += $this->getNational();
+        }
+
+        /** International */
+        $is_international = $country_id !== \STORE_COUNTRY;
+
+        if ($is_international) {
+            $methods = \array_merge($methods, $this->getShippingMethodsInternational());
+        }
+
+        return $methods;
+    }
+
+    public function getQuote(): ?array
+    {
+        /** Weight */
+        $shipping_weight_ideal   = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_IDEAL');
+        $shipping_weight_maximum = \constant(Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM');
+
+        $order_packer = new OrderPacker();
+        $order_packer->setIdealWeight($shipping_weight_ideal);
+        $order_packer->setMaximumWeight($shipping_weight_maximum);
+        $order_packer->packOrder();
+
+        $this->boxes            = $order_packer->getBoxes();
+        $this->weight           = $order_packer->getWeight();
+        $this->weight_formatted = $order_packer->getWeightFormatted();
+
+        if ($shipping_weight_maximum > 0) {
+            foreach ($this->boxes as $box) {
+                $box_weight = $box->getWeight();
+
+                if ($box_weight > $shipping_weight_maximum) {
+                    return null;
+                }
+            }
+        }
+
+        /** Methods */
+        $methods = $this->getShippingMethods();
 
         /** Surcharges */
         foreach ($methods as &$method) {
@@ -280,88 +319,17 @@ class Quote
             }
         }
 
-        /** Debug information */
-        $user_is_admin = isset($_SESSION['customers_status']['customers_status_id']) && 0 === (int) $_SESSION['customers_status']['customers_status_id'];
-
-        if ($user_is_admin) {
-            foreach ($methods as &$method) {
-                $total = 0;
-
-                ob_start();
-                ?>
-                <br><br>
-
-                <h3>Debug mode</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Costs</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php foreach ($method['calculations'] as $calculation) { ?>
-                            <?php $total += $calculation['costs']; ?>
-
-                            <tr>
-                                <td><?= $calculation['item'] ?></td>
-                                <td><?= \sprintf('%01.2f', $calculation['costs']) ?></td>
-                                <td><?= \sprintf('%01.2f', $total) ?></td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-                <?php
-                $method['title'] .= ob_get_clean();
-            }
+        /** Quote */
+        if (empty($methods)) {
+            return null;
         }
 
-        /** Quote */
         $quote = array(
             'id'      => \grandeljayfedex::class,
-            'module'  => sprintf(
-                constant(Constants::MODULE_SHIPPING_NAME . '_TEXT_TITLE_WEIGHT'),
-                $weight
-            ),
+            'module'  => 'FedEx',
             'methods' => $methods,
         );
 
         return $quote;
-    }
-
-    /**
-     * The total shipping weight should not exceed `WEIGHT_MAXIMUM`. Individual
-     * product weight should not exceed 45 kg. For international shipping only.
-     *
-     * TODO: Add a setting to configure the 45 kg.
-     *
-     * @link /admin/configuration.php?gID=7
-     *
-     * @return bool
-     */
-    public function exceedsMaximumWeight(): bool
-    {
-        global $order;
-
-        if (null === $order) {
-            return true;
-        }
-
-        $configuration_weight_max_key   = Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM';
-        $configuration_weight_max_value = constant($configuration_weight_max_key);
-
-        if ($configuration_weight_max_value > 0 && $this->weight > $configuration_weight_max_value) {
-            return true;
-        }
-
-        foreach ($order->products as $product) {
-            if ($product['weight'] > 45) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

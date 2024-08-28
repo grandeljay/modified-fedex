@@ -118,15 +118,14 @@ class grandeljayfedex extends StdModule
      */
     public function quote(): ?array
     {
-        $quote  = new Quote();
-        $quotes = $quote->getQuote();
+        $quote = (new Quote())->getQuote();
 
-        if (is_array($quotes) && !$quote->exceedsMaximumWeight()) {
-            $this->quotes = $quotes;
+        if (is_array($quote)) {
+            $this->quotes = $quote;
         } else {
             return null;
         }
 
-        return $quotes;
+        return $quote;
     }
 }
