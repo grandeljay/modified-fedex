@@ -333,9 +333,11 @@ class Quote
 
     /**
      * The total shipping weight should not exceed `WEIGHT_MAXIMUM`. Individual
-     * product weight should not exceed 45 kg.
+     * product weight should not exceed 45 kg. For international shipping only.
      *
      * TODO: Add a setting to configure the 45 kg.
+     *
+     * @link /admin/configuration.php?gID=7
      *
      * @return bool
      */
@@ -347,10 +349,10 @@ class Quote
             return true;
         }
 
-        $configuration_key_weight_max   = Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM';
-        $configuration_value_weight_max = constant($configuration_key_weight_max);
+        $configuration_weight_max_key   = Constants::MODULE_SHIPPING_NAME . '_WEIGHT_MAXIMUM';
+        $configuration_weight_max_value = constant($configuration_weight_max_key);
 
-        if ($this->weight > $configuration_value_weight_max) {
+        if ($configuration_weight_max_value > 0 && $this->weight > $configuration_weight_max_value) {
             return true;
         }
 
