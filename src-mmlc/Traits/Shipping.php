@@ -553,4 +553,61 @@ trait Shipping
 
         return $shipping_national_priority_freight;
     }
+
+    public function getInternational(): array
+    {
+        $international = \array_filter(
+            array(
+                $this->getInternationalEconomy(),
+                $this->getInternationalPriority(),
+            ),
+            function (array $method) {
+                return !empty($method);
+            }
+        );
+
+        return $international;
+    }
+
+    private function getInternationalEconomy(): array
+    {
+        $shipping_international_economy = array(
+            'id'               => 'internationaleconomy',
+            'title'            => 'Economy',
+            'description'      => 'Economy Versand.',
+            'cost'             => 0,
+            'calculations'     => array(),
+            'type'             => 'standard',
+            'weight_formatted' => $this->weight_formatted,
+        );
+
+        $this->setShippingCosts($shipping_international_economy);
+
+        if ($shipping_international_economy['cost'] <= 0) {
+            return array();
+        }
+
+        return $shipping_international_economy;
+    }
+
+    private function getInternationalPriority(): array
+    {
+        $shipping_international_priority = array(
+            'id'               => 'internationalpriority',
+            'title'            => 'Priority',
+            'description'      => 'Priority Versand.',
+            'cost'             => 0,
+            'calculations'     => array(),
+            'type'             => 'express',
+            'weight_formatted' => $this->weight_formatted,
+        );
+
+        $this->setShippingCosts($shipping_international_priority);
+
+        if ($shipping_international_priority['cost'] <= 0) {
+            return array();
+        }
+
+        return $shipping_international_priority;
+    }
 }

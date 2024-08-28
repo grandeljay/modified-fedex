@@ -13,19 +13,30 @@ class Quote
     private float $weight;
     private string $weight_formatted;
 
-    private function setShippingCosts(array &$method, Zone $zone): void
+    private function setShippingCosts(array &$method): void
     {
+        global $order;
+
+        $country_code = $order->delivery['country']['iso_code_2'] ?? null;
+        $country_zone = Zone::fromCountry($country_code);
+
         switch ($method['id']) {
-            case 'economy':
-                $configuration_key   = sprintf(Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s', $zone->name);
-                $configuration_value = constant($configuration_key);
-                $costs_list          = json_decode($configuration_value, true);
+            case 'internationaleconomy':
+                $configuration_key   = \sprintf(
+                    Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s',
+                    $country_zone->name
+                );
+                $configuration_value = \constant($configuration_key);
+                $costs_list          = \json_decode($configuration_value, true);
                 break;
 
-            case 'priority':
-                $configuration_key   = sprintf(Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s', $zone->name);
-                $configuration_value = constant($configuration_key);
-                $costs_list          = json_decode($configuration_value, true);
+            case 'internationalpriority':
+                $configuration_key   = \sprintf(
+                    Constants::MODULE_SHIPPING_NAME . '_SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s',
+                    $country_zone->name
+                );
+                $configuration_value = \constant($configuration_key);
+                $costs_list          = \json_decode($configuration_value, true);
                 break;
 
             default:
@@ -54,21 +65,6 @@ class Quote
 
                 break;
             }
-        }
-
-        if (0 === $method['cost'] && count($costs_list) >= 1) {
-            $cots_list_last = end($costs_list);
-            $costs          = $cots_list_last['weight-costs'];
-
-            $method['cost']          += $costs;
-            $method['calculations'][] = array(
-                'item'  => sprintf(
-                    'No tarif defined for <code>%01.2f</code> kg. Falling back to highest defined tarif (<code>%01.2f</code> kg) for this zone.',
-                    $this->weight,
-                    $cots_list_last['weight-max']
-                ),
-                'costs' => $costs,
-            );
         }
     }
 
@@ -185,45 +181,6 @@ class Quote
         }
     }
 
-    private function getShippingMethodsInternational(): array
-    {
-        $method_economy = array(
-            'id'           => 'economy',
-            'title'        => sprintf(
-                'Fedex Economy (%s)<!-- BREAK -->Zone %s',
-                $weight_formatted,
-                $country_zone->name
-            ),
-            'cost'         => 0,
-            'calculations' => array(),
-            'type'         => 'standard',
-        );
-
-        $this->setShippingCosts($method_economy, $country_zone);
-
-        if ($method_economy['cost'] > 0) {
-            $methods[] = $method_economy;
-        }
-
-        $method_priority = array(
-            'id'           => 'priority',
-            'title'        => sprintf(
-                'Fedex Priority (%s)<!-- BREAK -->Zone %s',
-                $weight_formatted,
-                $country_zone->name
-            ),
-            'cost'         => 0,
-            'calculations' => array(),
-            'type'         => 'express',
-        );
-
-        $this->setShippingCosts($method_priority, $country_zone);
-
-        if ($method_priority['cost'] > 0) {
-            $methods[] = $method_priority;
-        }
-    }
-
     private function getShippingMethods(): array
     {
         global $order;
@@ -248,7 +205,7 @@ class Quote
         $is_international = $country_id !== \STORE_COUNTRY;
 
         if ($is_international) {
-            $methods = \array_merge($methods, $this->getShippingMethodsInternational());
+            $methods += $this->getInternational();
         }
 
         return $methods;
