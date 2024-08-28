@@ -25,7 +25,7 @@ class Weight
                     <summary>Ideal</summary>
 
                     <div>
-                        <p>Zielgewicht beim berechnen der Versandkosten um z. B. die Transportsicherheit zu erhöhen. Pakete werden bis zu diesem Wert gepackt, außer ein Artikel wiegt mehr.</p>
+                        <p>Zielgewicht beim packen der Bestellung um z. B. die Transportsicherheit zu erhöhen. Pakete werden möglichst bis zu diesem Wert gepackt.</p>
 
                         <input type="number" step="any" name="configuration[<?= $configuration_key_ideal ?>]" value="<?= $configuration_value_ideal ?>">
                     </div>
@@ -35,7 +35,7 @@ class Weight
                     <summary>Maximal</summary>
 
                     <div>
-                        <p>Maximalgewicht in Kilogramm, das ein Artikel haben darf. Wenn ein Artikel im Warenkorb diesen Wert überschreitet, Wird die Versandart ausgeblendet.</p>
+                        <p>Maximalgewicht in Kilogramm, das ein Paket haben darf. Wenn ein Paket im Warenkorb diesen Wert überschreitet, wird die Versandart ausgeblendet.</p>
 
                         <input type="number" step="any" name="configuration[<?= $configuration_key_maximum ?>]" value="<?= $configuration_value_maximum ?>">
                     </div>
