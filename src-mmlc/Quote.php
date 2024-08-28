@@ -355,7 +355,7 @@ class Quote
         }
 
         foreach ($order->products as $product) {
-            if ($product['weight'] >= 45) {
+            if ($product['weight'] > 45) {
                 return true;
             }
         }
