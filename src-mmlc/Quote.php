@@ -228,7 +228,7 @@ class Quote
 
         if ($shipping_weight_maximum > 0) {
             foreach ($this->boxes as $box) {
-                $box_weight = $box->getWeight();
+                $box_weight = $box->getWeightWithoutAttributes();
 
                 if ($box_weight > $shipping_weight_maximum) {
                     return null;
