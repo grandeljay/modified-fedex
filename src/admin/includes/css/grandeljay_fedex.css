@@ -207,7 +207,7 @@ details > div > :last-child {
 /**
  * Tables
  */
-details.fedex-first > div table {
+details.shipping-national .tables > table {
     --radius: 4px;
     --cellPadding: 10px;
 
@@ -217,7 +217,7 @@ details.fedex-first > div table {
     border-spacing: 0;
 }
 
-details.fedex-first > div table > caption {
+details.shipping-national .tables > table > caption {
     padding: var(--cellPadding);
 
     color: #fff;
@@ -228,31 +228,31 @@ details.fedex-first > div table > caption {
     border-radius: var(--radius) var(--radius) 0 0;
 }
 
-details.fedex-first > div table > thead {
+details.shipping-national .tables > table > thead {
     color: whitesmoke;
     background-color: var(--colourPrimaryLight);
 }
 
-details.fedex-first > div table :is(th, td).align-right {
+details.shipping-national .tables > table :is(th, td).align-right {
     text-align: right;
 }
 
-details.fedex-first > div table :is(th, td).align-center {
+details.shipping-national .tables > table :is(th, td).align-center {
     text-align: center;
 }
 
-details.fedex-first .tables {
+details.shipping-national .tables {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     flex-flow: row wrap;
 }
 
-details.fedex-first > div .tables > table {
+details.shipping-national .tables > table {
     flex: 1 1 auto;
 }
 
-details.fedex-first > div .tables > table tr:nth-of-type(even) {
+details.shipping-national .tables > table tr:nth-of-type(even) {
     color: whitesmoke;
     background-color: var(--colourPrimaryLight);
 }

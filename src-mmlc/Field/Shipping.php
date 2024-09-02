@@ -17,6 +17,10 @@ class Shipping
 
             <div>
                 <?= self::getNationalFirst(); ?>
+                <?= self::getNationalPriorityExpress(); ?>
+                <?= self::getNationalPriority(); ?>
+                <?= self::getNationalPriorityExpressFreight(); ?>
+                <?= self::getNationalPriorityFreight(); ?>
             </div>
         </details>
         <?php
@@ -33,7 +37,7 @@ class Shipping
         ?>
         <details class="<?= $class ?>">
             <summary>
-                FedEx® First - Zustellung am Vormittag
+                First - Zustellung am Vormittag
             </summary>
 
             <div>
@@ -174,6 +178,408 @@ class Shipping
                             <tr>
                                 <td class="align-right">101+</td>
                                 <td class="align-right">0,97</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+        <?php
+        $html = ob_get_clean();
+
+        return $html;
+    }
+
+    public static function getNationalPriorityExpress(): string
+    {
+        $class = Field::getFieldClasses(array('fedex-priority-express'));
+
+        ob_start();
+        ?>
+        <details class="<?= $class ?>">
+            <summary>
+                Priority Express - Zustellung bis Mittag
+            </summary>
+
+            <div>
+                <div class="tables">
+                    <table>
+                        <caption>FedEx Envelope</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">0,5</td>
+                                <td class="align-right">8,66</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <caption>FedEx Pak</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">0,5</td>
+                                <td class="align-right">9,04</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">1,0</td>
+                                <td class="align-right">9,32</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">1,5</td>
+                                <td class="align-right">9,32</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">2,0</td>
+                                <td class="align-right">9,32</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">2,5</td>
+                                <td class="align-right">9,32</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="align-center">Preise für den Versand in anderen Verpackungen</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">5,0</td>
+                                <td class="align-right">9,55</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">10,0</td>
+                                <td class="align-right">9,55</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">15,0</td>
+                                <td class="align-right">15,20</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">20,0</td>
+                                <td class="align-right">15,20</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">25,0</td>
+                                <td class="align-right">21,95</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">30,0</td>
+                                <td class="align-right">21,95</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">35,0</td>
+                                <td class="align-right">31,45</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">40,0</td>
+                                <td class="align-right">31,45</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">45,0</td>
+                                <td class="align-right">36,45</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">50,0</td>
+                                <td class="align-right">36,45</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">60,0</td>
+                                <td class="align-right">43,24</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">70,0</td>
+                                <td class="align-right">49,34</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">80,0</td>
+                                <td class="align-right">55,40</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">90,0</td>
+                                <td class="align-right">61,54</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">100,0</td>
+                                <td class="align-right">67,59</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">101+</td>
+                                <td class="align-right">0,72</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+        <?php
+        $html = ob_get_clean();
+
+        return $html;
+    }
+
+    public static function getNationalPriority(): string
+    {
+        $class = Field::getFieldClasses(array('fedex-priority'));
+
+        ob_start();
+        ?>
+        <details class="<?= $class ?>">
+            <summary>
+                Priority - Zustellung bis zum Ende des Geschäftstages
+            </summary>
+
+            <div>
+                <div class="tables">
+                    <table>
+                        <caption>FedEx Envelope</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">0,5</td>
+                                <td class="align-right">5,35</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <caption>FedEx Pak</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">0,5</td>
+                                <td class="align-right">5,58</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">1,0</td>
+                                <td class="align-right">5,77</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">1,5</td>
+                                <td class="align-right">5,77</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">2,0</td>
+                                <td class="align-right">5,77</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">2,5</td>
+                                <td class="align-right">5,77</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="align-center">Preise für den Versand in anderen Verpackungen</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">5,0</td>
+                                <td class="align-right">6,40</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">10,0</td>
+                                <td class="align-right">6,40</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">15,0</td>
+                                <td class="align-right">7,75</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">20,0</td>
+                                <td class="align-right">7,75</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">25,0</td>
+                                <td class="align-right">10,15</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">30,0</td>
+                                <td class="align-right">10,15</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">35,0</td>
+                                <td class="align-right">27,05</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">40,0</td>
+                                <td class="align-right">27,05</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">45,0</td>
+                                <td class="align-right">31,29</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">50,0</td>
+                                <td class="align-right">31,29</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">60,0</td>
+                                <td class="align-right">38,04</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">70,0</td>
+                                <td class="align-right">44,39</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">80,0</td>
+                                <td class="align-right">49,93</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">90,0</td>
+                                <td class="align-right">55,33</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">100,0</td>
+                                <td class="align-right">60,84</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">101+</td>
+                                <td class="align-right">0,65</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+        <?php
+        $html = ob_get_clean();
+
+        return $html;
+    }
+
+    public static function getNationalPriorityExpressFreight(): string
+    {
+        $class = Field::getFieldClasses(array('fedex-priority-express-freight'));
+
+        ob_start();
+        ?>
+        <details class="<?= $class ?>">
+            <summary>
+                Priority Express Freight - Zustellung bis Mittag
+            </summary>
+
+            <div>
+                <div class="tables">
+                    <table>
+                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">68 - 100</td>
+                                <td class="align-right">1,48</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">101 - 200</td>
+                                <td class="align-right">1,48</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">201+</td>
+                                <td class="align-right">1,48</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+        <?php
+        $html = ob_get_clean();
+
+        return $html;
+    }
+
+    public static function getNationalPriorityFreight(): string
+    {
+        $class = Field::getFieldClasses(array('fedex-priority-freight'));
+
+        ob_start();
+        ?>
+        <details class="<?= $class ?>">
+            <summary>
+                Priority Freight - Zustellung bis zum Ende des Geschäftstages
+            </summary>
+
+            <div>
+                <div class="tables">
+                    <table>
+                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
+
+                        <thead>
+                            <tr>
+                                <th class="align-right">Gewicht (Kg)</th>
+                                <th class="align-right">Kosten (€)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="align-right">68 - 100</td>
+                                <td class="align-right">0,99</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">101 - 200</td>
+                                <td class="align-right">0,99</td>
+                            </tr>
+                            <tr>
+                                <td class="align-right">201+</td>
+                                <td class="align-right">0,99</td>
                             </tr>
                         </tbody>
                     </table>
