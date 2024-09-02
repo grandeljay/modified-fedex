@@ -57,7 +57,7 @@ class Shipping
                                     $configuration_value = \defined($configuration_key) ? \constant($configuration_key) : null;
                                     $configuration_name  = \sprintf('configuration[%s]', $configuration_key);
                                     ?>
-                                    <?= \xtc_draw_input_field($configuration_name, $configuration_value, '', false, 'number') ?>
+                                    <?= \xtc_draw_input_field($configuration_name, $configuration_value, 'min="0" step="any"', false, 'number') ?>
                                 </td>
                             </tr>
                         </tbody>
