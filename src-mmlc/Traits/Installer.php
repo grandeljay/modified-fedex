@@ -27,9 +27,11 @@ trait Installer
 
     private function addConfigurationShippingNational(): void
     {
-        $configuration_key = 'ENVELOPE_0_5_KG';
+        $configuration_key   = 'SHIPPING_NATIONAL_FIRST';
+        $configuration_value = Defaults::getShippingNationalFirst();
 
-        $this->addConfiguration($configuration_key, 18.14, 6, 1);
+        $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
+        $this->addConfiguration('SHIPPING_NATIONAL_FIRST_PRICE_PER_KG', 0.97, 6, 1);
     }
 
     private function addConfigurationShippingInternational(): void

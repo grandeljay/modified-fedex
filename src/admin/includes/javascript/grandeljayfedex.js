@@ -97,6 +97,30 @@ function documentChange(event) {
 
 document.addEventListener('change', documentChange);
 
+function inputShippingNationalFirstChange() {
+    let table     = this.closest('table');
+    let tableRows = table.querySelectorAll('tbody > tr');
+    let tableData = [];
+
+    let apiElement = this.closest('details').querySelector('[data-url]');
+
+    tableRows.forEach(tableRow => {
+        let inputWeightMax   = tableRow.querySelector('[data-name="weight-max"]');
+        let inputWeightCosts = tableRow.querySelector('[data-name="weight-costs"]');
+
+        if (tableRow.classList.contains('remove')) {
+            return;
+        }
+
+        tableData.push({
+            'weight-max'   : inputWeightMax.value,
+            'weight-costs' : inputWeightCosts.value
+        });
+    });
+
+    apiElement.value = JSON.stringify(tableData);
+}
+
 function inputWeightChange() {
     let table     = this.closest('table');
     let tableRows = table.querySelectorAll('tbody > tr');

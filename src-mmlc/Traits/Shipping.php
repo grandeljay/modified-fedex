@@ -37,112 +37,16 @@ trait Shipping
         ];
 
         /**
-         * Envelope
+         * Tariffs
          */
-        if ($this->weight < 0.5) {
-            $weight_constant = Constants::MODULE_SHIPPING_NAME . '_ENVELOPE_0_5_KG';
-            $weight_costs    = \defined($weight_constant) ? \constant($weight_constant) : 0;
+        $configuration_key   = \sprintf(
+            '%s_SHIPPING_NATIONAL_FIRST',
+            Constants::MODULE_SHIPPING_NAME
+        );
+        $configuration_value = \constant($configuration_key);
 
-            $shipping_national_first['cost']           = $weight_costs;
-            $shipping_national_first['calculations'][] = [
-                'item'  => sprintf(
-                    'National Shipping (Envelope)',
-                ),
-                'costs' => $weight_costs,
-            ];
-
-            return $shipping_national_first;
-        }
-
-        /**
-         * Pak
-         */
-        $prices_pak        = [
-            [
-                'weight-max'   => 0.5,
-                'weight-costs' => 18.94,
-            ],
-            [
-                'weight-max'   => 1.0,
-                'weight-costs' => 19.54,
-            ],
-            [
-                'weight-max'   => 1.5,
-                'weight-costs' => 19.54,
-            ],
-            [
-                'weight-max'   => 2.0,
-                'weight-costs' => 19.54,
-            ],
-            [
-                'weight-max'   => 2.5,
-                'weight-costs' => 19.54,
-            ],
-        ];
-        $prices_other      = [
-            [
-                'weight-max'   => 5,
-                'weight-costs' => 22.45,
-            ],
-            [
-                'weight-max'   => 10,
-                'weight-costs' => 22.45,
-            ],
-            [
-                'weight-max'   => 15,
-                'weight-costs' => 31.95,
-            ],
-            [
-                'weight-max'   => 20,
-                'weight-costs' => 31.95,
-            ],
-            [
-                'weight-max'   => 25,
-                'weight-costs' => 39.20,
-            ],
-            [
-                'weight-max'   => 30,
-                'weight-costs' => 39.20,
-            ],
-            [
-                'weight-max'   => 35,
-                'weight-costs' => 50.20,
-            ],
-            [
-                'weight-max'   => 40,
-                'weight-costs' => 50.20,
-            ],
-            [
-                'weight-max'   => 45,
-                'weight-costs' => 56.31,
-            ],
-            [
-                'weight-max'   => 50,
-                'weight-costs' => 56.31,
-            ],
-            [
-                'weight-max'   => 60,
-                'weight-costs' => 64.59,
-            ],
-            [
-                'weight-max'   => 70,
-                'weight-costs' => 71.90,
-            ],
-            [
-                'weight-max'   => 80,
-                'weight-costs' => 79.09,
-            ],
-            [
-                'weight-max'   => 90,
-                'weight-costs' => 86.44,
-            ],
-            [
-                'weight-max'   => 100,
-                'weight-costs' => 93.65,
-            ],
-        ];
-        $prices            = \array_merge($prices_pak, $prices_other);
-        $prices_weight_max = \array_key_last($prices);
+        $prices            = \json_decode($configuration_value, true);
+        $prices_weight_max = 100;
 
         if ($this->weight <= $prices_weight_max) {
             foreach ($prices as $weight => $entry) {

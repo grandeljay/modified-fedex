@@ -207,52 +207,6 @@ details > div > :last-child {
 /**
  * Tables
  */
-details.shipping-national .tables > table {
-    --radius: 4px;
-    --cellPadding: 10px;
-
-    border: 1px solid var(--colourPrimary);
-    border-color: inherit;
-    border-radius: 0 0 var(--radius) var(--radius);
-    border-spacing: 0;
-}
-
-details.shipping-national .tables > table > caption {
-    padding: var(--cellPadding);
-
-    color: #fff;
-    background-color: var(--colourPrimary);
-    font-weight: 600;
-
-    border-bottom: none;
-    border-radius: var(--radius) var(--radius) 0 0;
-}
-
-details.shipping-national .tables > table > thead {
-    color: whitesmoke;
-    background-color: var(--colourPrimaryLight);
-}
-
-details.shipping-national .tables > table :is(th, td).align-right {
+:is(th, td).align-right {
     text-align: right;
-}
-
-details.shipping-national .tables > table :is(th, td).align-center {
-    text-align: center;
-}
-
-details.shipping-national .tables {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    flex-flow: row wrap;
-}
-
-details.shipping-national .tables > table {
-    flex: 1 1 auto;
-}
-
-details.shipping-national .tables > table tr:nth-of-type(even) {
-    color: whitesmoke;
-    background-color: var(--colourPrimaryLight);
 }

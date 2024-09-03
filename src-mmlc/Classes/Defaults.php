@@ -4,6 +4,64 @@ namespace Grandeljay\Fedex\Classes;
 
 class Defaults
 {
+    public static function getShippingNationalFirst(): string
+    {
+        $data = [
+            [
+                'weight-max'   => 0.5,
+                'weight-costs' => 18.94,
+            ],
+            [
+                'weight-max'   => 2.5,
+                'weight-costs' => 19,
+                54,
+            ],
+            [
+                'weight-max'   => 10.0,
+                'weight-costs' => 22.54,
+            ],
+            [
+                'weight-max'   => 20.0,
+                'weight-costs' => 31.95,
+            ],
+            [
+                'weight-max'   => 30.0,
+                'weight-costs' => 39.20,
+            ],
+            [
+                'weight-max'   => 40.0,
+                'weight-costs' => 50.20,
+            ],
+            [
+                'weight-max'   => 50.0,
+                'weight-costs' => 56.31,
+            ],
+            [
+                'weight-max'   => 60.0,
+                'weight-costs' => 64.59,
+            ],
+            [
+                'weight-max'   => 70.0,
+                'weight-costs' => 71.90,
+            ],
+            [
+                'weight-max'   => 80.0,
+                'weight-costs' => 79.09,
+            ],
+            [
+                'weight-max'   => 90.0,
+                'weight-costs' => 86.44,
+            ],
+            [
+                'weight-max'   => 100.0,
+                'weight-costs' => 93.65,
+            ],
+        ];
+        $json = json_encode($data);
+
+        return $json;
+    }
+
     public static function getShippingInternationalEconomyZoneA(): string
     {
         $data = [
