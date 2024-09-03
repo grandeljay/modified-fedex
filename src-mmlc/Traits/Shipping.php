@@ -45,18 +45,20 @@ trait Shipping
         );
         $configuration_value = \constant($configuration_key);
 
-        $prices            = \json_decode($configuration_value, true);
-        $prices_weight_max = 100;
+        $tariffs            = \json_decode($configuration_value, true);
+        $tariffs_weight_max = 100;
 
-        if ($this->weight <= $prices_weight_max) {
-            foreach ($prices as $weight => $entry) {
-                if ($this->weight <= $weight) {
-                    $shipping_national_first['cost']           = $entry['costs'];
+        if ($this->weight <= $tariffs_weight_max) {
+            foreach ($tariffs as $tariff) {
+                if ($this->weight <= $tariff['weight-max']) {
+                    $shipping_national_first['cost']           = $tariff['weight-costs'];
                     $shipping_national_first['calculations'][] = [
                         'item'  => sprintf(
-                            'National Shipping (Pak)',
+                            'National Shipping: <i>%s</i> (<code>%s</code> kg)',
+                            $shipping_national_first['title'],
+                            \round($tariff['weight-max'], 2)
                         ),
-                        'costs' => $entry['costs'],
+                        'costs' => $tariff['weight-costs'],
                     ];
                     break;
                 }

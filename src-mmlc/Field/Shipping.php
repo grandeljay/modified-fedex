@@ -6,19 +6,39 @@ use Grandeljay\Fedex\{Constants, Zone};
 
 class Shipping
 {
-    private static function setConfigurationApplyFactor(string $configuration_value): void
+    private static function getConfigurationFilteredJson(string $configuration_key): string
     {
-        $factor              = $_GET['factor'] ?? 1;
-        $tariffs_json        = \json_decode($configuration_value, true);
-        $tariffs             = \array_map(
+        $configuration_json    = defined($configuration_key)
+                               ? constant($configuration_key)
+                               : '[]';
+        $configuration_decoded = \json_decode($configuration_json, true);
+        $configuration_value   =  \array_filter(
+            $configuration_decoded,
+            function (array $tariff) {
+                if (empty($tariff) || empty($tariff['weight-max']) || empty($tariff['weight-costs'])) {
+                    return false;
+                }
+
+                return true;
+            }
+        );
+
+        /** Apply Factor */
+        $factor = $_GET['factor'] ?? 1;
+
+        $configuration_value = \array_map(
             function (array $tariff) use ($factor) {
                 $tariff['weight-costs'] *= $factor;
 
                 return $tariff;
             },
-            $tariffs_json
+            $configuration_value
         );
-        $configuration_value = \json_encode($tariffs);
+        /** */
+
+        $configuration_json = \json_encode($configuration_value);
+
+        return $configuration_json;
     }
 
     public static function getNational(): string
@@ -61,12 +81,7 @@ class Shipping
                     '%s_SHIPPING_NATIONAL_FIRST',
                     Constants::MODULE_SHIPPING_NAME
                 );
-                $configuration_value = defined($configuration_key)
-                                     ? constant($configuration_key)
-                                     : '[]';
-
-                /** Apply factor */
-                self::setConfigurationApplyFactor($configuration_value);
+                $configuration_value = self::getConfigurationFilteredJson($configuration_key);
                 ?>
 
                 <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_NATIONAL_GET ?>"><?= $configuration_value ?></textarea>
@@ -512,16 +527,13 @@ class Shipping
             <div>
                 <?php foreach (Zone::cases() as $zone) { ?>
                     <?php
-                    $zone_title          = sprintf('Zone %s', $zone->name);
-                    $configuration_key   = sprintf(
+                    $zone_title          = \sprintf('Zone %s', $zone->name);
+                    $configuration_key   = \sprintf(
                         '%s_SHIPPING_INTERNATIONAL_ECONOMY_ZONE%s',
                         Constants::MODULE_SHIPPING_NAME,
                         $zone->name
                     );
-                    $configuration_value = constant($configuration_key);
-
-                    /** Apply factor */
-                    self::setConfigurationApplyFactor($configuration_value);
+                    $configuration_value = self::getConfigurationFilteredJson($configuration_key);
                     ?>
                     <details class="<?= $class ?>">
                         <summary><?= $zone_title ?></summary>
@@ -553,16 +565,13 @@ class Shipping
             <div>
                 <?php foreach (Zone::cases() as $zone) { ?>
                     <?php
-                    $zone_title          = sprintf('Zone %s', $zone->name);
-                    $configuration_key   = sprintf(
+                    $zone_title          = \sprintf('Zone %s', $zone->name);
+                    $configuration_key   = \sprintf(
                         '%s_SHIPPING_INTERNATIONAL_PRIORITY_ZONE%s',
                         Constants::MODULE_SHIPPING_NAME,
                         $zone->name
                     );
-                    $configuration_value = constant($configuration_key);
-
-                    /** Apply factor */
-                    self::setConfigurationApplyFactor($configuration_value);
+                    $configuration_value = self::getConfigurationFilteredJson($configuration_key);
                     ?>
                     <details class="<?= $class ?>">
                         <summary><?= $zone_title ?></summary>
