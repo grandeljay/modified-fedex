@@ -40,7 +40,7 @@ class Quote
                 break;
 
             default:
-                $costs_list = array();
+                $costs_list = [];
                 break;
         }
 
@@ -54,14 +54,14 @@ class Quote
         foreach ($costs_list as $cost) {
             if ($this->weight <= $cost['weight-max']) {
                 $method['cost']          += $cost['weight-costs'];
-                $method['calculations'][] = array(
+                $method['calculations'][] = [
                     'item'  => sprintf(
                         'Shipping weight is <code>%01.2f</code> kg (tarif is <code>%01.2f</code> kg).',
                         $this->weight,
                         $cost['weight-max']
                     ),
                     'costs' => $cost['weight-costs'],
-                );
+                ];
 
                 break;
             }
@@ -83,7 +83,7 @@ class Quote
 
                 /** Skip iteration if date critera doesn't match */
                 if ($date_now < $date_from || $date_now > $date_to) {
-                    $method['calculations'][] = array(
+                    $method['calculations'][] = [
                         'item'  => sprintf(
                             'Surcharge %s has date set: %s - %s. Skipping surcharge...',
                             '<i>' . $surcharge['name'] . '</i>',
@@ -91,11 +91,11 @@ class Quote
                             $surcharge['date-to']
                         ),
                         'costs' => 0,
-                    );
+                    ];
 
                     continue;
                 } else {
-                    $method['calculations'][] = array(
+                    $method['calculations'][] = [
                         'item'  => sprintf(
                             'Surcharge %s has date set: %s - %s. Applying surcharge:',
                             '<i>' . $surcharge['name'] . '</i>',
@@ -103,7 +103,7 @@ class Quote
                             $surcharge['date-to']
                         ),
                         'costs' => 0,
-                    );
+                    ];
                 }
             }
 
@@ -121,7 +121,7 @@ class Quote
                     if ($product_data['weight'] >= $surcharge['weight']) {
                         /** Apply the surcharge */
                         $method['cost']          += $amount;
-                        $method['calculations'][] = array(
+                        $method['calculations'][] = [
                             'item'  => sprintf(
                                 'Surcharge %s (<code>%01.2f</code> kg) for %s.',
                                 '<i>' . $surcharge['name'] . '</i>',
@@ -129,12 +129,12 @@ class Quote
                                 $product_data['model']
                             ),
                             'costs' => $amount,
-                        );
+                        ];
                     }
                 }
             } else {
                 $method['cost']          += $amount;
-                $method['calculations'][] = array(
+                $method['calculations'][] = [
                     'item'  => sprintf(
                         'Surcharge %s is <code>%01.2f</code> %s.',
                         '<i>' . $surcharge['name'] . '</i>',
@@ -142,7 +142,7 @@ class Quote
                         $symbol
                     ),
                     'costs' => $amount,
-                );
+                ];
             }
         }
 
@@ -167,14 +167,14 @@ class Quote
                 $pick_pack_costs = $cost['weight-costs'];
 
                 $method['cost']          += $pick_pack_costs;
-                $method['calculations'][] = array(
+                $method['calculations'][] = [
                     'item'  => sprintf(
                         'Pick & Pack for <code>%01.2f</code> kg (tarif is <code>%01.2f</code> kg).',
                         $this->weight,
                         $cost['weight-max']
                     ),
                     'costs' => $pick_pack_costs,
-                );
+                ];
 
                 break;
             }
@@ -189,10 +189,10 @@ class Quote
         $country_id   = $order->delivery['country']['id']         ?? null;
 
         if (null === $country_code || null === $country_id) {
-            return array();
+            return [];
         }
 
-        $methods = array();
+        $methods = [];
 
         /** National */
         $is_national = $country_id === \STORE_COUNTRY;
@@ -267,12 +267,12 @@ class Quote
                 }
 
                 $method['cost']          += $costs;
-                $method['calculations'][] = array(
+                $method['calculations'][] = [
                     'item'  => sprintf(
                         'Rounding up',
                     ),
                     'costs' => $costs,
-                );
+                ];
             }
         }
 
@@ -281,11 +281,11 @@ class Quote
             return null;
         }
 
-        $quote = array(
+        $quote = [
             'id'      => \grandeljayfedex::class,
             'module'  => 'FedEx',
             'methods' => $methods,
-        );
+        ];
 
         return $quote;
     }

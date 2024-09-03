@@ -27,16 +27,16 @@ class BulkPriceChangePreview
     {
         $page               = \xtc_href_link_admin(\DIR_ADMIN . \FILENAME_MODULES);
         $factor             = $_GET['factor'] ?? 1;
-        $reset_parameters   = array(
+        $reset_parameters   = [
             'set'    => $_GET['set'],
             'module' => $_GET['module'],
             'action' => $_GET['action'],
-        );
+        ];
         $reset_href         = $page . '?' . \http_build_query($reset_parameters);
         $preview_parameters = \http_build_query(
             \array_merge(
                 $reset_parameters,
-                array('factor' => $factor)
+                ['factor' => $factor]
             )
         );
         $preview_href       = $page . '?' . $preview_parameters;

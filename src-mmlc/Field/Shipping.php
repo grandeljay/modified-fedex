@@ -8,7 +8,7 @@ class Shipping
 {
     public static function getNational(): string
     {
-        $class = Field::getFieldClasses(array('shipping-national'));
+        $class = Field::getFieldClasses(['shipping-national']);
 
         ob_start();
         ?>
@@ -31,7 +31,7 @@ class Shipping
 
     public static function getNationalFirst(): string
     {
-        $class = Field::getFieldClasses(array('fedex-first'));
+        $class = Field::getFieldClasses(['fedex-first']);
 
         ob_start();
         ?>
@@ -192,7 +192,7 @@ class Shipping
 
     public static function getNationalPriorityExpress(): string
     {
-        $class = Field::getFieldClasses(array('fedex-priority-express'));
+        $class = Field::getFieldClasses(['fedex-priority-express']);
 
         ob_start();
         ?>
@@ -346,7 +346,7 @@ class Shipping
 
     public static function getNationalPriority(): string
     {
-        $class = Field::getFieldClasses(array('fedex-priority'));
+        $class = Field::getFieldClasses(['fedex-priority']);
 
         ob_start();
         ?>
@@ -500,7 +500,7 @@ class Shipping
 
     public static function getNationalPriorityExpressFreight(): string
     {
-        $class = Field::getFieldClasses(array('fedex-priority-express-freight'));
+        $class = Field::getFieldClasses(['fedex-priority-express-freight']);
 
         ob_start();
         ?>
@@ -547,7 +547,7 @@ class Shipping
 
     public static function getNationalPriorityFreight(): string
     {
-        $class = Field::getFieldClasses(array('fedex-priority-freight'));
+        $class = Field::getFieldClasses(['fedex-priority-freight']);
 
         ob_start();
         ?>

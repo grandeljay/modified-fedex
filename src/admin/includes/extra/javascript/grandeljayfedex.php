@@ -11,11 +11,11 @@
 namespace Grandeljay\Fedex;
 
 /** Only enqueue JavaScript when module settings are open */
-$grandeljayfedex_admin_screen = array(
+$grandeljayfedex_admin_screen = [
     'set'    => 'shipping',
     'module' => \grandeljayfedex::class,
     'action' => 'edit',
-);
+];
 
 parse_str($_SERVER['QUERY_STRING'] ?? '', $query_string);
 

@@ -53,22 +53,22 @@ enum Zone
     public static function getCountries(Zone $zone): array
     {
         $countries = match ($zone) {
-            Zone::A => array('CA'),
-            Zone::B => array('AU', 'JP', 'KR', 'TH', 'MX'),
-            Zone::C => array('EG', 'IL', 'IN', 'DZ', 'LK'),
-            Zone::D => array('AR', 'BR', 'CR', 'DO', 'PY', 'PE', 'PA'),
-            Zone::E => array('AM', 'AZ', 'GE', 'KZ', 'KG', 'UZ', 'IQ', 'NG', 'NE'),
-            Zone::H => array('US'),
-            Zone::R => array('AT', 'BE', 'DK', 'FR', 'LU', 'NL'),
-            Zone::S => array('ES', 'GR', 'FI', 'PT', 'SE'),
-            Zone::T => array('BG', 'CZ', 'EE', 'LT', 'LV', 'RO', 'SL', 'SK'),
-            Zone::U => array('NO', 'TR', 'CH'),
-            Zone::V => array('MD', 'RU', 'BY', 'UA', 'RS', 'HR', 'AL'),
-            Zone::W => array('IT'),
-            Zone::X => array('PL'),
-            Zone::Y => array('GB'),
+            Zone::A => ['CA'],
+            Zone::B => ['AU', 'JP', 'KR', 'TH', 'MX'],
+            Zone::C => ['EG', 'IL', 'IN', 'DZ', 'LK'],
+            Zone::D => ['AR', 'BR', 'CR', 'DO', 'PY', 'PE', 'PA'],
+            Zone::E => ['AM', 'AZ', 'GE', 'KZ', 'KG', 'UZ', 'IQ', 'NG', 'NE'],
+            Zone::H => ['US'],
+            Zone::R => ['AT', 'BE', 'DK', 'FR', 'LU', 'NL'],
+            Zone::S => ['ES', 'GR', 'FI', 'PT', 'SE'],
+            Zone::T => ['BG', 'CZ', 'EE', 'LT', 'LV', 'RO', 'SL', 'SK'],
+            Zone::U => ['NO', 'TR', 'CH'],
+            Zone::V => ['MD', 'RU', 'BY', 'UA', 'RS', 'HR', 'AL'],
+            Zone::W => ['IT'],
+            Zone::X => ['PL'],
+            Zone::Y => ['GB'],
 
-            default => array(),
+            default => [],
         };
 
         return $countries;

@@ -21,7 +21,7 @@ class grandeljayfedex extends StdModule
 
     public const VERSION = '0.10.0';
 
-    public array $properties = array();
+    public array $properties = [];
 
     public static function userMayAccessAPI(): bool
     {
@@ -53,7 +53,7 @@ class grandeljayfedex extends StdModule
      *
      * @var array
      */
-    public array $quotes = array();
+    public array $quotes = [];
 
     /**
      * Used to calculate the tax.

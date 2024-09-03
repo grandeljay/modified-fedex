@@ -10,7 +10,7 @@
 
 use Grandeljay\Fedex\Constants;
 
-$translations = array(
+$translations = [
     /** Module */
     'TITLE'                                          => 'grandeljay - FedEx',
     'TEXT_TITLE'                                     => 'Fedex',
@@ -37,7 +37,7 @@ $translations = array(
     'BULK_PRICE_CHANGE_PREVIEW_FACTOR_PREVIEW_TITLE' => 'Vista previa',
     'BULK_PRICE_CHANGE_PREVIEW_FACTOR_PREVIEW_DESC'  => 'La vista previa de los factores está activa. Compruebe todos los precios y haga clic en "Actualizar" para aplicar los ajustes de forma permanente. De lo contrario, haga clic en "Cancelar".',
     'BULK_PRICE_CHANGE_PREVIEW_FACTOR_RESET_TITLE'   => 'Restablecer',
-);
+];
 
 foreach ($translations as $key => $value) {
     $constant = Constants::MODULE_SHIPPING_NAME . '_' . $key;
