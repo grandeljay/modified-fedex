@@ -27,12 +27,58 @@ trait Installer
 
     private function addConfigurationShippingNational(): void
     {
+        $this->addConfigurationShippingNationalFirst();
+        $this->addConfigurationShippingNationalPriorityExpress();
+        $this->addConfigurationShippingNationalPriority();
+        $this->addConfigurationShippingNationalPriorityExpressFreight();
+        $this->addConfigurationShippingNationalPriorityFreight();
+    }
+
+    private function addConfigurationShippingNationalFirst(): void
+    {
         $configuration_key   = 'SHIPPING_NATIONAL_FIRST';
         $configuration_value = Defaults::getShippingNationalFirst();
 
         $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
         $this->addConfiguration('SHIPPING_NATIONAL_FIRST_PRICE_PER_KG', 0.97, 6, 1);
     }
+
+    private function addConfigurationShippingNationalPriorityExpress(): void
+    {
+        $configuration_key   = 'SHIPPING_NATIONAL_PRIORITY_EXPRESS';
+        $configuration_value = Defaults::getShippingNationalPriorityExpress();
+
+        $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
+        $this->addConfiguration('SHIPPING_NATIONAL_PRIORITY_EXPRESS_PRICE_PER_KG', 0.72, 6, 1);
+    }
+
+    private function addConfigurationShippingNationalPriority(): void
+    {
+        $configuration_key   = 'SHIPPING_NATIONAL_PRIORITY';
+        $configuration_value = Defaults::getShippingNationalPriority();
+
+        $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
+        $this->addConfiguration('SHIPPING_NATIONAL_PRIORITY_PRICE_PER_KG', 0.65, 6, 1);
+    }
+
+    private function addConfigurationShippingNationalPriorityExpressFreight(): void
+    {
+        $configuration_key   = 'SHIPPING_NATIONAL_PRIORITY_EXPRESS_FREIGHT';
+        $configuration_value = Defaults::getShippingNationalPriorityExpressFreight();
+
+        $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
+        $this->addConfiguration('SHIPPING_NATIONAL_PRIORITY_EXPRESS_FREIGHT_PRICE_PER_KG', 0.65, 6, 1);
+    }
+
+    private function addConfigurationShippingNationalPriorityFreight(): void
+    {
+        $configuration_key   = 'SHIPPING_NATIONAL_PRIORITY_FREIGHT';
+        $configuration_value = Defaults::getShippingNationalPriorityFreight();
+
+        $this->addConfiguration($configuration_key, $configuration_value, 6, 1);
+        $this->addConfiguration('SHIPPING_NATIONAL_PRIORITY_FREIGHT_PRICE_PER_KG', 0.65, 6, 1);
+    }
+
 
     private function addConfigurationShippingInternational(): void
     {

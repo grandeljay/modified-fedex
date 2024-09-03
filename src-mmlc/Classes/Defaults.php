@@ -13,8 +13,7 @@ class Defaults
             ],
             [
                 'weight-max'   => 2.5,
-                'weight-costs' => 19,
-                54,
+                'weight-costs' => 19.54,
             ],
             [
                 'weight-max'   => 10.0,
@@ -61,6 +60,167 @@ class Defaults
 
         return $json;
     }
+
+    public static function getShippingNationalPriorityExpress(): string
+    {
+        $data = [
+            [
+                'weight-max'   => 0.5,
+                'weight-costs' => 9.04,
+            ],
+            [
+                'weight-max'   => 2.5,
+                'weight-costs' => 9.32,
+            ],
+            [
+                'weight-max'   => 10.0,
+                'weight-costs' => 9.55,
+            ],
+            [
+                'weight-max'   => 20.0,
+                'weight-costs' => 15.20,
+            ],
+            [
+                'weight-max'   => 30.0,
+                'weight-costs' => 21.95,
+            ],
+            [
+                'weight-max'   => 40.0,
+                'weight-costs' => 31.45,
+            ],
+            [
+                'weight-max'   => 50.0,
+                'weight-costs' => 36.45,
+            ],
+            [
+                'weight-max'   => 60.0,
+                'weight-costs' => 43.24,
+            ],
+            [
+                'weight-max'   => 70.0,
+                'weight-costs' => 49.34,
+            ],
+            [
+                'weight-max'   => 80.0,
+                'weight-costs' => 55.40,
+            ],
+            [
+                'weight-max'   => 90.0,
+                'weight-costs' => 61.54,
+            ],
+            [
+                'weight-max'   => 100.0,
+                'weight-costs' => 67.59,
+            ],
+        ];
+        $json = json_encode($data);
+
+        return $json;
+    }
+
+    public static function getShippingNationalPriority(): string
+    {
+        $data = [
+            [
+                'weight-max'   => 0.5,
+                'weight-costs' => 5.58,
+            ],
+            [
+                'weight-max'   => 2.5,
+                'weight-costs' => 5.77,
+            ],
+            [
+                'weight-max'   => 10.0,
+                'weight-costs' => 6.40,
+            ],
+            [
+                'weight-max'   => 20.0,
+                'weight-costs' => 7.75,
+            ],
+            [
+                'weight-max'   => 30.0,
+                'weight-costs' => 10.15,
+            ],
+            [
+                'weight-max'   => 40.0,
+                'weight-costs' => 27.05,
+            ],
+            [
+                'weight-max'   => 50.0,
+                'weight-costs' => 31.29,
+            ],
+            [
+                'weight-max'   => 60.0,
+                'weight-costs' => 38.04,
+            ],
+            [
+                'weight-max'   => 70.0,
+                'weight-costs' => 44.39,
+            ],
+            [
+                'weight-max'   => 80.0,
+                'weight-costs' => 49.93,
+            ],
+            [
+                'weight-max'   => 90.0,
+                'weight-costs' => 55.33,
+            ],
+            [
+                'weight-max'   => 100.0,
+                'weight-costs' => 60.84,
+            ],
+        ];
+        $json = json_encode($data);
+
+        return $json;
+    }
+
+    public static function getShippingNationalPriorityExpressFreight(): string
+    {
+        $data = [
+            [
+                'weight-min'   => 68,
+                'weight-max'   => 100,
+                'weight-costs' => 1.48,
+            ],
+            [
+                'weight-min'   => 101,
+                'weight-max'   => 200,
+                'weight-costs' => 1.48,
+            ],
+            [
+                'weight-min'   => 201,
+                'weight-costs' => 1.48,
+            ],
+        ];
+        $json = json_encode($data);
+
+        return $json;
+    }
+
+    public static function getShippingNationalPriorityFreight(): string
+    {
+        $data = [
+            [
+                'weight-min'   => 68,
+                'weight-max'   => 100,
+                'weight-costs' => 0.99,
+            ],
+            [
+                'weight-min'   => 101,
+                'weight-max'   => 200,
+                'weight-costs' => 0.99,
+            ],
+            [
+                'weight-min'   => 201,
+                'weight-costs' => 0.99,
+            ],
+        ];
+        $json = json_encode($data);
+
+        return $json;
+    }
+
 
     public static function getShippingInternationalEconomyZoneA(): string
     {

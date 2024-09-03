@@ -23,4 +23,8 @@ class Constants
     public const API_ENDPOINT_WEIGHT_NATIONAL     = self::API_ENDPOINT . '/weight_national';
     public const API_ENDPOINT_WEIGHT_NATIONAL_ADD = self::API_ENDPOINT_WEIGHT_NATIONAL . '/add.php';
     public const API_ENDPOINT_WEIGHT_NATIONAL_GET = self::API_ENDPOINT_WEIGHT_NATIONAL . '/get.php';
+
+    public const API_ENDPOINT_WEIGHT_NATIONAL_FREIGHT     = self::API_ENDPOINT . '/weight_national_freight';
+    public const API_ENDPOINT_WEIGHT_NATIONAL_FREIGHT_ADD = self::API_ENDPOINT_WEIGHT_NATIONAL_FREIGHT . '/add.php';
+    public const API_ENDPOINT_WEIGHT_NATIONAL_FREIGHT_GET = self::API_ENDPOINT_WEIGHT_NATIONAL_FREIGHT . '/get.php';
 }

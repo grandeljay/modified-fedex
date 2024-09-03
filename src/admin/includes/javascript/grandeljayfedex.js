@@ -121,6 +121,32 @@ function inputShippingNationalFirstChange() {
     apiElement.value = JSON.stringify(tableData);
 }
 
+function inputShippingNationalFreightChange() {
+    let table     = this.closest('table');
+    let tableRows = table.querySelectorAll('tbody > tr');
+    let tableData = [];
+
+    let apiElement = this.closest('details').querySelector('[data-url]');
+
+    tableRows.forEach(tableRow => {
+        let inputWeightMin   = tableRow.querySelector('[data-name="weight-min"]');
+        let inputWeightMax   = tableRow.querySelector('[data-name="weight-max"]');
+        let inputWeightCosts = tableRow.querySelector('[data-name="weight-costs"]');
+
+        if (tableRow.classList.contains('remove')) {
+            return;
+        }
+
+        tableData.push({
+            'weight-min'   : inputWeightMin.value,
+            'weight-max'   : inputWeightMax.value,
+            'weight-costs' : inputWeightCosts.value
+        });
+    });
+
+    apiElement.value = JSON.stringify(tableData);
+}
+
 function inputWeightChange() {
     let table     = this.closest('table');
     let tableRows = table.querySelectorAll('tbody > tr');

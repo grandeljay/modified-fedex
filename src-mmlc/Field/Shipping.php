@@ -15,7 +15,7 @@ class Shipping
         $configuration_value   =  \array_filter(
             $configuration_decoded,
             function (array $tariff) {
-                if (empty($tariff) || empty($tariff['weight-max']) || empty($tariff['weight-costs'])) {
+                if (empty($tariff) || (empty($tariff['weight-min']) && empty($tariff['weight-max'])) || empty($tariff['weight-costs'])) {
                     return false;
                 }
 
@@ -105,140 +105,15 @@ class Shipping
             </summary>
 
             <div>
-                <div class="tables">
-                    <table>
-                        <caption>FedEx Envelope</caption>
+                <?php
+                $configuration_key   = \sprintf(
+                    '%s_SHIPPING_NATIONAL_PRIORITY_EXPRESS',
+                    Constants::MODULE_SHIPPING_NAME
+                );
+                $configuration_value = self::getConfigurationFilteredJson($configuration_key);
+                ?>
 
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">0,5</td>
-                                <td class="align-right">8,66</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table>
-                        <caption>FedEx Pak</caption>
-
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">0,5</td>
-                                <td class="align-right">9,04</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">1,0</td>
-                                <td class="align-right">9,32</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">1,5</td>
-                                <td class="align-right">9,32</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">2,0</td>
-                                <td class="align-right">9,32</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">2,5</td>
-                                <td class="align-right">9,32</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="align-center">Preise für den Versand in anderen Verpackungen</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">5,0</td>
-                                <td class="align-right">9,55</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">10,0</td>
-                                <td class="align-right">9,55</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">15,0</td>
-                                <td class="align-right">15,20</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">20,0</td>
-                                <td class="align-right">15,20</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">25,0</td>
-                                <td class="align-right">21,95</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">30,0</td>
-                                <td class="align-right">21,95</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">35,0</td>
-                                <td class="align-right">31,45</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">40,0</td>
-                                <td class="align-right">31,45</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">45,0</td>
-                                <td class="align-right">36,45</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">50,0</td>
-                                <td class="align-right">36,45</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">60,0</td>
-                                <td class="align-right">43,24</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">70,0</td>
-                                <td class="align-right">49,34</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">80,0</td>
-                                <td class="align-right">55,40</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">90,0</td>
-                                <td class="align-right">61,54</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">100,0</td>
-                                <td class="align-right">67,59</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table>
-                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
-
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">101+</td>
-                                <td class="align-right">0,72</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_NATIONAL_GET ?>"><?= $configuration_value ?></textarea>
             </div>
         </details>
         <?php
@@ -259,140 +134,15 @@ class Shipping
             </summary>
 
             <div>
-                <div class="tables">
-                    <table>
-                        <caption>FedEx Envelope</caption>
+                <?php
+                $configuration_key   = \sprintf(
+                    '%s_SHIPPING_NATIONAL_PRIORITY',
+                    Constants::MODULE_SHIPPING_NAME
+                );
+                $configuration_value = self::getConfigurationFilteredJson($configuration_key);
+                ?>
 
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">0,5</td>
-                                <td class="align-right">5,35</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table>
-                        <caption>FedEx Pak</caption>
-
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">0,5</td>
-                                <td class="align-right">5,58</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">1,0</td>
-                                <td class="align-right">5,77</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">1,5</td>
-                                <td class="align-right">5,77</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">2,0</td>
-                                <td class="align-right">5,77</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">2,5</td>
-                                <td class="align-right">5,77</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="align-center">Preise für den Versand in anderen Verpackungen</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">5,0</td>
-                                <td class="align-right">6,40</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">10,0</td>
-                                <td class="align-right">6,40</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">15,0</td>
-                                <td class="align-right">7,75</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">20,0</td>
-                                <td class="align-right">7,75</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">25,0</td>
-                                <td class="align-right">10,15</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">30,0</td>
-                                <td class="align-right">10,15</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">35,0</td>
-                                <td class="align-right">27,05</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">40,0</td>
-                                <td class="align-right">27,05</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">45,0</td>
-                                <td class="align-right">31,29</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">50,0</td>
-                                <td class="align-right">31,29</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">60,0</td>
-                                <td class="align-right">38,04</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">70,0</td>
-                                <td class="align-right">44,39</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">80,0</td>
-                                <td class="align-right">49,93</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">90,0</td>
-                                <td class="align-right">55,33</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">100,0</td>
-                                <td class="align-right">60,84</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table>
-                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
-
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">101+</td>
-                                <td class="align-right">0,65</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_NATIONAL_GET ?>"><?= $configuration_value ?></textarea>
             </div>
         </details>
         <?php
@@ -413,33 +163,15 @@ class Shipping
             </summary>
 
             <div>
-                <div class="tables">
-                    <table>
-                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
+                <?php
+                $configuration_key   = \sprintf(
+                    '%s_SHIPPING_NATIONAL_PRIORITY_EXPRESS_FREIGHT',
+                    Constants::MODULE_SHIPPING_NAME
+                );
+                $configuration_value = self::getConfigurationFilteredJson($configuration_key);
+                ?>
 
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">68 - 100</td>
-                                <td class="align-right">1,48</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">101 - 200</td>
-                                <td class="align-right">1,48</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">201+</td>
-                                <td class="align-right">1,48</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_NATIONAL_FREIGHT_GET ?>"><?= $configuration_value ?></textarea>
             </div>
         </details>
         <?php
@@ -460,33 +192,15 @@ class Shipping
             </summary>
 
             <div>
-                <div class="tables">
-                    <table>
-                        <caption>Preis pro Kg (mit dem Gesamtgewicht multiplizieren)</caption>
+                <?php
+                $configuration_key   = \sprintf(
+                    '%s_SHIPPING_NATIONAL_PRIORITY_FREIGHT',
+                    Constants::MODULE_SHIPPING_NAME
+                );
+                $configuration_value = self::getConfigurationFilteredJson($configuration_key);
+                ?>
 
-                        <thead>
-                            <tr>
-                                <th class="align-right">Gewicht (Kg)</th>
-                                <th class="align-right">Kosten (€)</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="align-right">68 - 100</td>
-                                <td class="align-right">0,99</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">101 - 200</td>
-                                <td class="align-right">0,99</td>
-                            </tr>
-                            <tr>
-                                <td class="align-right">201+</td>
-                                <td class="align-right">0,99</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <textarea name="configuration[<?= $configuration_key ?>]" spellcheck="false" data-url="<?= Constants::API_ENDPOINT_WEIGHT_NATIONAL_FREIGHT_GET ?>"><?= $configuration_value ?></textarea>
             </div>
         </details>
         <?php
