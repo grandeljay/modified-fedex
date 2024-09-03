@@ -269,7 +269,8 @@ class Quote
                 $method['cost']          += $costs;
                 $method['calculations'][] = [
                     'item'  => sprintf(
-                        'Rounding up',
+                        'Rounding up to <code>%s</code> €.',
+                        0.9
                     ),
                     'costs' => $costs,
                 ];
