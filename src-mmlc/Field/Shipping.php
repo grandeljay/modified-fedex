@@ -6,6 +6,21 @@ use Grandeljay\Fedex\{Constants, Zone};
 
 class Shipping
 {
+    private static function setConfigurationApplyFactor(string $configuration_value): void
+    {
+        $factor              = $_GET['factor'] ?? 1;
+        $tariffs_json        = \json_decode($configuration_value, true);
+        $tariffs             = \array_map(
+            function (array $tariff) use ($factor) {
+                $tariff['weight-costs'] *= $factor;
+
+                return $tariff;
+            },
+            $tariffs_json
+        );
+        $configuration_value = \json_encode($tariffs);
+    }
+
     public static function getNational(): string
     {
         $class = Field::getFieldClasses(['shipping-national']);
@@ -633,17 +648,7 @@ class Shipping
                     $configuration_value = constant($configuration_key);
 
                     /** Apply factor */
-                    $factor              = $_GET['factor'] ?? 1;
-                    $tariffs_json        = \json_decode($configuration_value, true);
-                    $tariffs             = \array_map(
-                        function (array $tariff) use ($factor) {
-                            $tariff['weight-costs'] *= $factor;
-
-                            return $tariff;
-                        },
-                        $tariffs_json
-                    );
-                    $configuration_value = \json_encode($tariffs);
+                    self::setConfigurationApplyFactor($configuration_value);
                     ?>
                     <details class="<?= $class ?>">
                         <summary><?= $zone_title ?></summary>
@@ -684,18 +689,7 @@ class Shipping
                     $configuration_value = constant($configuration_key);
 
                     /** Apply factor */
-                    $factor              = $_GET['factor'] ?? 1;
-                    $tariffs_json        = \json_decode($configuration_value, true);
-                    $tariffs             = \array_map(
-                        function (array $tariff) use ($factor) {
-                            $tariff['weight-costs'] *= $factor;
-
-                            return $tariff;
-                        },
-                        $tariffs_json
-                    );
-                    $configuration_value = \json_encode($tariffs);
-
+                    self::setConfigurationApplyFactor($configuration_value);
                     ?>
                     <details class="<?= $class ?>">
                         <summary><?= $zone_title ?></summary>
