@@ -211,6 +211,8 @@ function inputAddClick() {
         }
     };
 
+    table.classList.add('loading');
+
     fetch(url, options)
         .then(response => {
             return response.text();
@@ -224,7 +226,7 @@ function inputAddClick() {
             console.error('Fetch error:', error);
         })
         .finally(() => {
-
+            table.classList.remove('loading');
         });
 }
 
