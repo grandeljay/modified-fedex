@@ -76,7 +76,9 @@ trait Shipping
         $shipping_national_first['cost']           = $price;
         $shipping_national_first['calculations'][] = [
             'item'  => sprintf(
-                'National Shipping (price per kg)',
+                'National Shipping (<code>%s+</code> kg, <code>%s</code> € per kg)',
+                $tariffs_weight_max,
+                $price_per_kg
             ),
             'costs' => $price,
         ];
@@ -136,7 +138,9 @@ trait Shipping
         $shipping_national_priority_express['cost']           = $price;
         $shipping_national_priority_express['calculations'][] = [
             'item'  => sprintf(
-                'National Shipping (price per kg)',
+                'National Shipping (<code>%s+</code> kg, <code>%s</code> € per kg)',
+                $tariffs_weight_max,
+                $price_per_kg
             ),
             'costs' => $price,
         ];
@@ -196,7 +200,9 @@ trait Shipping
         $shipping_national_priority['cost']           = $price;
         $shipping_national_priority['calculations'][] = [
             'item'  => sprintf(
-                'National Shipping (price per kg)',
+                'National Shipping (<code>%s+</code> kg, <code>%s</code> € per kg)',
+                $tariffs_weight_max,
+                $price_per_kg
             ),
             'costs' => $price,
         ];
