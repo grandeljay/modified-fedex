@@ -19,7 +19,7 @@ class grandeljayfedex extends StdModule
 {
     use Installer;
 
-    public const VERSION = '0.11.0';
+    public const VERSION = '0.11.1';
 
     public array $properties = [];
 
