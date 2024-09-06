@@ -20,6 +20,10 @@ class Quote
         $country_code = $order->delivery['country']['iso_code_2'] ?? null;
         $country_zone = Zone::fromCountry($country_code);
 
+        if (null === $country_zone) {
+            return;
+        }
+
         switch ($method['id']) {
             case 'internationaleconomy':
                 $configuration_key   = \sprintf(
