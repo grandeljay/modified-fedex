@@ -281,6 +281,14 @@ class Quote
             }
         }
 
+        /** Sort by price, ascending */
+        \usort(
+            $methods,
+            function (array $method_a, array $method_b) {
+                return $method_a['cost'] <=> $method_b['cost'];
+            }
+        );
+
         /** Quote */
         if (empty($methods)) {
             return null;
