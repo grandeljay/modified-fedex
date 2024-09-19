@@ -37,6 +37,14 @@ $translations = [
     'BULK_PRICE_CHANGE_PREVIEW_FACTOR_PREVIEW_TITLE' => 'Anteprima',
     'BULK_PRICE_CHANGE_PREVIEW_FACTOR_PREVIEW_DESC'  => 'L\'anteprima del fattore è attiva! Controllare tutti i prezzi e fare clic su "Aggiorna" per applicare le impostazioni in modo permanente. Altrimenti, fare clic su "Annulla".',
     'BULK_PRICE_CHANGE_PREVIEW_FACTOR_RESET_TITLE'   => 'Reset',
+
+    /** Method */
+    'METHOD_FIRST_TITLE'                             => 'Prima 10:30',
+    'METHOD_FIRST_DESC'                              => 'Consegna al mattino, probabilmente alle 10:30.',
+    'METHOD_PRIORITY_EXPRESS_TITLE'                  => 'Priority Express 12:00',
+    'METHOD_PRIORITY_EXPRESS_DESC'                   => 'Consegna a mezzogiorno, probabilmente alle 12:00.',
+    'METHOD_PRIORITY_TITLE'                          => 'Priority Express 18:00',
+    'METHOD_PRIORITY_DESC'                           => 'Consegna entro la fine della giornata lavorativa, probabilmente alle 18:00.',
 ];
 
 foreach ($translations as $key => $value) {

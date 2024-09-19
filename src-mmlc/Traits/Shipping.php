@@ -26,10 +26,15 @@ trait Shipping
 
     private function getNationalFirst(): array
     {
+        $method_title_constant       = \sprintf('%s_METHOD_FIRST_TITLE', Constants::MODULE_SHIPPING_NAME);
+        $method_title                = \defined($method_title_constant) ? \constant($method_title_constant) : $method_title_constant;
+        $method_description_constant = \sprintf('%s_METHOD_FIRST_DESC', Constants::MODULE_SHIPPING_NAME);
+        $method_description          = \defined($method_description_constant) ? \constant($method_description_constant) : $method_description_constant;
+
         $shipping_national_first = [
             'id'               => 'nationalfirst',
-            'title'            => 'First',
-            'description'      => 'Zustellung am Vormittag.',
+            'title'            => $method_title,
+            'description'      => $method_description,
             'cost'             => 0,
             'calculations'     => [],
             'type'             => 'express',
@@ -88,10 +93,15 @@ trait Shipping
 
     private function getNationalPriorityExpress(): array
     {
+        $method_title_constant       = \sprintf('%s_METHOD_PRIORITY_EXPRESS_TITLE', Constants::MODULE_SHIPPING_NAME);
+        $method_title                = \defined($method_title_constant) ? \constant($method_title_constant) : $method_title_constant;
+        $method_description_constant = \sprintf('%s_METHOD_PRIORITY_EXPRESS_DESC', Constants::MODULE_SHIPPING_NAME);
+        $method_description          = \defined($method_description_constant) ? \constant($method_description_constant) : $method_description_constant;
+
         $shipping_national_priority_express = [
             'id'               => 'nationalpriorityexpress',
-            'title'            => 'Priority Express',
-            'description'      => 'Zustellung bis Mittag.',
+            'title'            => $method_title,
+            'description'      => $method_description,
             'cost'             => 0,
             'calculations'     => [],
             'type'             => 'express',
@@ -150,10 +160,15 @@ trait Shipping
 
     private function getNationalPriority(): array
     {
+        $method_title_constant       = \sprintf('%s_METHOD_PRIORITY_TITLE', Constants::MODULE_SHIPPING_NAME);
+        $method_title                = \defined($method_title_constant) ? \constant($method_title_constant) : $method_title_constant;
+        $method_description_constant = \sprintf('%s_METHOD_PRIORITY_DESC', Constants::MODULE_SHIPPING_NAME);
+        $method_description          = \defined($method_description_constant) ? \constant($method_description_constant) : $method_description_constant;
+
         $shipping_national_priority = [
             'id'               => 'nationalpriority',
-            'title'            => 'Priority',
-            'description'      => 'Zustellung bis zum Ende des Geschäftstages.',
+            'title'            => $method_title,
+            'description'      => $method_description,
             'cost'             => 0,
             'calculations'     => [],
             'type'             => 'express',
