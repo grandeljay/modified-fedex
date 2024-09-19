@@ -43,7 +43,7 @@ $translations = [
     'METHOD_FIRST_DESC'                              => 'Entrega por la mañana, probablemente a las 10:30.',
     'METHOD_PRIORITY_EXPRESS_TITLE'                  => 'Prioridad Express 12:00',
     'METHOD_PRIORITY_EXPRESS_DESC'                   => 'Entrega a mediodía, probablemente a las 12:00.',
-    'METHOD_PRIORITY_TITLE'                          => 'Prioridad Express 18:00',
+    'METHOD_PRIORITY_TITLE'                          => 'Prioridad 18:00',
     'METHOD_PRIORITY_DESC'                           => 'Entrega al final del día laborable, probablemente a las 18:00.',
 ];
 
